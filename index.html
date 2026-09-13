@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0f19">
+<title>Yanz Downloader - Tanpa Watermark</title>
+
+<style>
+/* CSS dipertahankan sesuai dengan desain asli */
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
+body{min-height:100vh;background:radial-gradient(circle at top,#172554 0,#0b0f19 40%,#05070c 100%);color:#fff;}
+header{width:100%;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(15px);position:sticky;top:0;z-index:20;background:rgba(5,7,12,.75);}
+.logo{font-size:23px;font-weight:800;}
+.logo span{color:#38bdf8;}
+nav{display:flex;gap:10px;}
+nav button{background:rgba(255,255,255,.06);color:#ddd;border:1px solid rgba(255,255,255,.08);padding:9px 13px;border-radius:10px;cursor:pointer;}
+nav button:hover{background:rgba(56,189,248,.15);}
+.hero{max-width:1000px;margin:70px auto 0;padding:20px;text-align:center;}
+.badge{display:inline-block;padding:7px 13px;border-radius:30px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);color:#7dd3fc;font-size:13px;margin-bottom:20px;}
+h1{font-size:clamp(35px,7vw,68px);line-height:1.05;margin-bottom:20px;}
+h1 span{color:#38bdf8;}
+.hero p{color:#9ca3af;max-width:650px;margin:auto;line-height:1.7;}
+.downloader{max-width:850px;margin:40px auto;padding:20px;}
+.inputBox{padding:8px;display:flex;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:17px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:white;padding:15px;font-size:15px;}
+.inputBox input::placeholder{color:#687386;}
+.downloadBtn{border:0;background:#38bdf8;color:#02111c;padding:0 22px;border-radius:12px;font-weight:800;cursor:pointer;}
+.downloadBtn:hover{filter:brightness(1.1);}
+.quick{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px;}
+.quick button{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.05);color:#ddd;padding:9px 13px;border-radius:30px;cursor:pointer;}
+.quick button:hover{border-color:#38bdf8;color:#7dd3fc;}
+.result{display:none;margin-top:25px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:left;}
+.result.show{display:block;}
+.resultTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
+.platform{color:#38bdf8;font-weight:bold;}
+.info{background:rgba(0,0,0,.18);padding:14px;border-radius:12px;color:#aeb7c6;line-height:1.6;font-size:14px;}
+.actionRow{display:flex;gap:10px;margin-top:15px;}
+.actionRow button{flex:1;padding:12px;border:0;border-radius:10px;cursor:pointer;font-weight:bold;}
+.primary{background:#38bdf8;color:#03131e;}
+.secondary{background:rgba(255,255,255,.08);color:#fff;}
+.loading{display:none;text-align:center;padding:20px;color:#94a3b8;}
+.spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cards{max-width:1050px;margin:70px auto;padding:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:15px;}
+.card{padding:22px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:17px;}
+.icon{font-size:30px;margin-bottom:13px;}
+.card h3{margin-bottom:8px;}
+.card p{color:#8994a5;font-size:14px;line-height:1.6;}
+.history{max-width:850px;margin:0 auto 70px;padding:20px;}
+.history h2{margin-bottom:15px;}
+.historyList{display:flex;flex-direction:column;gap:8px;}
+.historyItem{display:flex;justify-content:space-between;gap:10px;align-items:center;background:rgba(255,255,255,.045);padding:13px;border-radius:10px;color:#aeb7c6;font-size:13px;}
+.historyItem button{border:0;background:#38bdf8;color:#00131e;padding:7px 10px;border-radius:7px;cursor:pointer;}
+.empty{color:#667085;padding:15px 0;}
+.statusBox{max-width:850px;margin:0 auto 70px;padding:20px;}
+.statusCard{border:1px dashed rgba(56,189,248,.35);border-radius:18px;padding:25px;text-align:center;background:rgba(56,189,248,.035);}
+.statusCard input{display:none;}
+.uploadBtn{display:inline-block;margin-top:15px;padding:12px 20px;background:#38bdf8;color:#03131e;border-radius:10px;font-weight:bold;cursor:pointer;}
+footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px 20px;color:#687386;font-size:13px;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.modal.show{display:flex;}
+.modalBox{width:100%;max-width:450px;background:#101621;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:25px;}
+.modalBox h2{margin-bottom:15px;}
+.modalBox p{color:#9ca3af;line-height:1.7;font-size:14px;}
+.close{width:100%;margin-top:20px;padding:12px;border:0;border-radius:10px;background:#38bdf8;cursor:pointer;font-weight:bold;}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){header{padding:15px;}nav button{font-size:12px;padding:8px;}.hero{margin-top:40px;}.downloader{margin-top:25px;}.inputBox{flex-direction:column;}.downloadBtn{padding:14px;}.cards{grid-template-columns:1fr;margin-top:35px;}.actionRow{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Yanz<span>DL</span></div>
+    <nav>
+        <button onclick="showAbout()">Tentang</button>
+        <button onclick="clearHistory()">Hapus Riwayat</button>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="badge">⚡ Fast Media Downloader (No Watermark)</div>
+    <h1>Download Media<br><span>Lebih Mudah.</span></h1>
+    <p>Tempel link media dari platform yang didukung, lalu unduh secara gratis tanpa watermark.</p>
+</section>
+
+<section class="downloader">
+    <div class="inputBox">
+        <input id="urlInput" type="url" placeholder="Tempel link TikTok..." autocomplete="off">
+        <button class="downloadBtn" onclick="processURL()">Download</button>
+    </div>
+
+    <div class="quick">
+        <button onclick="setPlatform('tiktok')">🎵 TikTok</button>
+        <!-- Tombol lainnya bisa ditambahkan jika backend multi-platform siap -->
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>Memproses link...</div>
+    </div>
+
+    <div class="result" id="result">
+        <div class="resultTitle">
+            <strong>Media ditemukan</strong>
+            <span class="platform" id="platformName">-</span>
+        </div>
+        <div class="info" id="resultInfo">-</div>
+        <div class="actionRow">
+            <button class="primary" id="apiButton" onclick="openAPI()">Tampilkan Link Unduhan</button>
+            <button class="secondary" onclick="copyURL()">Salin Link Video</button>
+        </div>
+    </div>
+</section>
+
+<!-- Section Cards, History, Status WA, dan Footer dibiarkan sama dengan struktur asli -->
+<section class="cards">
+    <div class="card"><div class="icon">🎵</div><h3>TikTok</h3><p>Tempel URL TikTok untuk mengunduh video tanpa watermark secara langsung.</p></div>
+    <div class="card"><div class="icon">📸</div><h3>Instagram</h3><p>Mendukung URL posting/reel (Butuh konfigurasi API backend tambahan).</p></div>
+    <div class="card"><div class="icon">▶️</div><h3>YouTube</h3><p>Pengunduhan harus mengikuti ketentuan dan izin dari platform.</p></div>
+    <div class="card"><div class="icon">💬</div><h3>WhatsApp</h3><p>Pilih media Status yang telah tersimpan di perangkatmu.</p></div>
+</section>
+
+<section class="history">
+    <h2>🕘 Riwayat</h2>
+    <div class="historyList" id="historyList"></div>
+</section>
+
+<footer>© 2026 YanzDL — Personal Media Downloader</footer>
+
+<div class="modal" id="modal">
+    <div class="modalBox">
+        <h2>Tentang YanzDL</h2>
+        <p>YanzDL adalah web downloader yang telah dimodifikasi menggunakan API gratis (contoh: TikWM) untuk mengunduh video TikTok tanpa watermark.</p>
+        <button class="close" onclick="closeAbout()">Tutup</button>
+    </div>
+</div>
+
+<script>
+let currentURL = "";
+let historyData = JSON.parse(localStorage.getItem("yanzdl_history") || "[]");
+
+function detectPlatform(url){
+    const text = url.toLowerCase();
+    if(text.includes("tiktok.com") || text.includes("vm.tiktok.com")) return "TikTok";
+    if(text.includes("instagram.com") || text.includes("instagr.am")) return "Instagram";
+    if(text.includes("youtube.com") || text.includes("youtu.be")) return "YouTube";
+    return "Tidak dikenal";
+}
+
+function setPlatform(platform){
+    const input = document.getElementById("urlInput");
+    const examples = {
+        tiktok: "https://www.tiktok.com/",
+        instagram: "https://www.instagram.com/",
+        youtube: "https://www.youtube.com/"
+    };
+    input.value = examples[platform];
+    input.focus();
+}
+
+async function processURL(){
+    const input = document.getElementById("urlInput");
+    const url = input.value.trim();
+
+    if(!url) { alert("Masukkan link terlebih dahulu."); input.focus(); return; }
+    if(!url.startsWith("http://") && !url.startsWith("https://")){ alert("Link harus diawali http:// atau https://"); return; }
+    
+    currentURL = url;
+    const platform = detectPlatform(url);
+
+    if(platform === "Tidak dikenal"){
+        alert("Platform belum dikenali. Gunakan link TikTok.");
+        return;
+    }
+
+    const loading = document.getElementById("loading");
+    const result = document.getElementById("result");
+
+    result.classList.remove("show");
+    loading.style.display = "block";
+
+    await new Promise(resolve => setTimeout(resolve,900));
+
+    loading.style.display = "none";
+    document.getElementById("platformName").textContent = platform;
+    
+    document.getElementById("resultInfo").innerHTML = `
+        <b>Platform:</b> ${platform}<br>
+        <b>URL:</b> ${escapeHTML(url)}<br><br>
+        Link berhasil dikenali. Klik <b>Tampilkan Link Unduhan</b> untuk mengambil video tanpa watermark.
+    `;
+    
+    // Reset button onclick function
+    const btn = document.getElementById("apiButton");
+    btn.textContent = "Ambil Data (Tanpa Watermark)";
+    btn.onclick = openAPI;
+
+    result.classList.add("show");
+    saveHistory(url,platform);
+}
+
+/* =====================================================
+   API PROCESS - MODIFIKASI UNTUK FITUR NO WATERMARK
+   ===================================================== */
+async function openAPI(){
+    if(!currentURL){ alert("Link belum tersedia."); return; }
+    
+    const platform = detectPlatform(currentURL);
+    document.getElementById("loading").style.display = "block";
+    const info = document.getElementById("resultInfo");
+
+    try{
+        if(platform === "TikTok") {
+            // Menggunakan API pihak ketiga publik (TikWM) untuk mendapatkan video TikTok No Watermark
+            const res = await fetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(currentURL));
+            const data = await res.json();
+            document.getElementById("loading").style.display = "none";
+            
+            if(data.code !== 0){
+                throw new Error(data.msg || "Gagal mengambil video TikTok");
+            }
+            
+            showAPIResult({
+                title: data.data.title,
+                thumbnail: data.data.cover,
+                download: data.data.play // Link ini adalah video tanpa watermark
+            });
+        } else {
+            // Jika bukan TikTok, tampilkan peringatan karena endpoint no watermark berbeda-beda
+            document.getElementById("loading").style.display = "none";
+            alert("Maaf, API publik langsung untuk " + platform + " memerlukan pengaturan backend pribadi.");
+        }
+    } catch(error){
+        document.getElementById("loading").style.display = "none";
+        alert("Gagal memproses:\n" + error.message);
+    }
+}
+
+function showAPIResult(data){
+    const info = document.getElementById("resultInfo");
+    let html = "";
+
+    if(data.title){ html += `<b>Judul:</b> ${escapeHTML(data.title)}<br>`; }
+    if(data.thumbnail){
+        html += `<br><img src="${escapeAttribute(data.thumbnail)}" style="max-width:100%; border-radius:12px; margin-bottom:12px;">`;
+    }
+    
+    html += `<br><span style="color:#38bdf8; font-weight:bold;">Video Tanpa Watermark Siap Diunduh!</span>`;
+    info.innerHTML = html;
+
+    const button = document.getElementById("apiButton");
+    if(data.download){
+        button.textContent = "⬇️ Download Media (HD)";
+        button.onclick = function(){
+            window.open(data.download, "_blank");
+        };
+    }
+}
+
+async function copyURL(){
+    if(!currentURL){ alert("Tidak ada link."); return; }
+    try{ await navigator.clipboard.writeText(currentURL); alert("Link berhasil disalin."); }
+    catch{ prompt("Salin link berikut:", currentURL); }
+}
+
+function saveHistory(url,platform){
+    historyData = historyData.filter(item => item.url !== url);
+    historyData.unshift({url:url, platform:platform, time:new Date().toLocaleString("id-ID")});
+    historyData = historyData.slice(0,10);
+    localStorage.setItem("yanzdl_history", JSON.stringify(historyData));
+    renderHistory();
+}
+
+function renderHistory(){
+    const list = document.getElementById("historyList");
+    if(historyData.length === 0){ list.innerHTML = `<div class="empty">Belum ada riwayat download.</div>`; return; }
+    list.innerHTML = historyData.map((item,index) => `
+        <div class="historyItem">
+            <div style="min-width:0">
+                <b>${escapeHTML(item.platform)}</b><br>
+                <span style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:600px;">${escapeHTML(item.url)}</span>
+                <small>${escapeHTML(item.time)}</small>
+            </div>
+            <button onclick="useHistory(${index})">Pakai</button>
+        </div>
+    `).join("");
+}
+
+function useHistory(index){
+    const item = historyData[index];
+    document.getElementById("urlInput").value = item.url;
+    window.scrollTo({top:250, behavior:"smooth"});
+}
+
+function clearHistory(){
+    if(!confirm("Hapus semua riwayat?")) return;
+    historyData = [];
+    localStorage.removeItem("yanzdl_history");
+    renderHistory();
+}
+
+function showAbout(){ document.getElementById("modal").classList.add("show"); }
+function closeAbout(){ document.getElementById("modal").classList.remove("show"); }
+
+function escapeHTML(value){ return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+function escapeAttribute(value){ return String(value).replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+renderHistory();
+document.getElementById("urlInput").addEventListener("keydown", function(event){
+    if(event.key === "Enter"){ processURL(); }
+});
+</script>
+</body>
+</html>

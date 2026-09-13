@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b0f19">
-<title>Yanz Downloader - Tanpa Watermark</title>
+<title>Yanz Downloader - Preview & Direct Download</title>
 
 <style>
-/* CSS dipertahankan sesuai dengan desain asli */
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
 body{min-height:100vh;background:radial-gradient(circle at top,#172554 0,#0b0f19 40%,#05070c 100%);color:#fff;}
 header{width:100%;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(15px);position:sticky;top:0;z-index:20;background:rgba(5,7,12,.75);}
@@ -79,43 +78,41 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 </header>
 
 <section class="hero">
-    <div class="badge">⚡ Fast Media Downloader (No Watermark)</div>
+    <div class="badge">⚡ Preview & Direct Storage Downloader</div>
     <h1>Download Media<br><span>Lebih Mudah.</span></h1>
-    <p>Tempel link media dari platform yang didukung, lalu unduh secara gratis tanpa watermark.</p>
+    <p>Tempel link TikTok untuk melihat preview dan bio video sebelum diunduh.</p>
 </section>
 
 <section class="downloader">
     <div class="inputBox">
-        <input id="urlInput" type="url" placeholder="Tempel link TikTok..." autocomplete="off">
-        <button class="downloadBtn" onclick="processURL()">Download</button>
+        <input id="urlInput" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off">
+        <button class="downloadBtn" onclick="processURL()">Cek Video</button>
     </div>
 
     <div class="quick">
         <button onclick="setPlatform('tiktok')">🎵 TikTok</button>
-        <!-- Tombol lainnya bisa ditambahkan jika backend multi-platform siap -->
     </div>
 
     <div class="loading" id="loading">
         <div class="spinner"></div>
-        <div>Memproses link...</div>
+        <div>Mengambil informasi video...</div>
     </div>
 
     <div class="result" id="result">
         <div class="resultTitle">
-            <strong>Media ditemukan</strong>
+            <strong>Preview Video & Bio</strong>
             <span class="platform" id="platformName">-</span>
         </div>
         <div class="info" id="resultInfo">-</div>
         <div class="actionRow">
-            <button class="primary" id="apiButton" onclick="openAPI()">Tampilkan Link Unduhan</button>
-            <button class="secondary" onclick="copyURL()">Salin Link Video</button>
+            <button class="primary" id="downloadActionBtn">⬇️ Download ke Perangkat</button>
+            <button class="secondary" onclick="copyURL()">Salin Link Tautan</button>
         </div>
     </div>
 </section>
 
-<!-- Section Cards, History, Status WA, dan Footer dibiarkan sama dengan struktur asli -->
 <section class="cards">
-    <div class="card"><div class="icon">🎵</div><h3>TikTok</h3><p>Tempel URL TikTok untuk mengunduh video tanpa watermark secara langsung.</p></div>
+    <div class="card"><div class="icon">🎵</div><h3>TikTok</h3><p>Lihat bio dan preview thumbnail sebelum mengunduh video tanpa watermark.</p></div>
     <div class="card"><div class="icon">📸</div><h3>Instagram</h3><p>Mendukung URL posting/reel (Butuh konfigurasi API backend tambahan).</p></div>
     <div class="card"><div class="icon">▶️</div><h3>YouTube</h3><p>Pengunduhan harus mengikuti ketentuan dan izin dari platform.</p></div>
     <div class="card"><div class="icon">💬</div><h3>WhatsApp</h3><p>Pilih media Status yang telah tersimpan di perangkatmu.</p></div>
@@ -131,31 +128,26 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 <div class="modal" id="modal">
     <div class="modalBox">
         <h2>Tentang YanzDL</h2>
-        <p>YanzDL adalah web downloader yang telah dimodifikasi menggunakan API gratis (contoh: TikWM) untuk mengunduh video TikTok tanpa watermark.</p>
+        <p>YanzDL menampilkan preview bio video terlebih dahulu, lalu mengunduh file langsung ke penyimpanan perangkat Anda.</p>
         <button class="close" onclick="closeAbout()">Tutup</button>
     </div>
 </div>
 
 <script>
 let currentURL = "";
+let cachedDownloadUrl = "";
+let cachedFilename = "tiktok_video.mp4";
 let historyData = JSON.parse(localStorage.getItem("yanzdl_history") || "[]");
 
 function detectPlatform(url){
     const text = url.toLowerCase();
     if(text.includes("tiktok.com") || text.includes("vm.tiktok.com")) return "TikTok";
-    if(text.includes("instagram.com") || text.includes("instagr.am")) return "Instagram";
-    if(text.includes("youtube.com") || text.includes("youtu.be")) return "YouTube";
     return "Tidak dikenal";
 }
 
 function setPlatform(platform){
     const input = document.getElementById("urlInput");
-    const examples = {
-        tiktok: "https://www.tiktok.com/",
-        instagram: "https://www.instagram.com/",
-        youtube: "https://www.youtube.com/"
-    };
-    input.value = examples[platform];
+    if(platform === 'tiktok') input.value = "https://www.tiktok.com/";
     input.focus();
 }
 
@@ -169,8 +161,8 @@ async function processURL(){
     currentURL = url;
     const platform = detectPlatform(url);
 
-    if(platform === "Tidak dikenal"){
-        alert("Platform belum dikenali. Gunakan link TikTok.");
+    if(platform !== "TikTok"){
+        alert("Saat ini fitur preview baru dioptimalkan untuk TikTok.");
         return;
     }
 
@@ -180,81 +172,77 @@ async function processURL(){
     result.classList.remove("show");
     loading.style.display = "block";
 
-    await new Promise(resolve => setTimeout(resolve,900));
-
-    loading.style.display = "none";
-    document.getElementById("platformName").textContent = platform;
-    
-    document.getElementById("resultInfo").innerHTML = `
-        <b>Platform:</b> ${platform}<br>
-        <b>URL:</b> ${escapeHTML(url)}<br><br>
-        Link berhasil dikenali. Klik <b>Tampilkan Link Unduhan</b> untuk mengambil video tanpa watermark.
-    `;
-    
-    // Reset button onclick function
-    const btn = document.getElementById("apiButton");
-    btn.textContent = "Ambil Data (Tanpa Watermark)";
-    btn.onclick = openAPI;
-
-    result.classList.add("show");
-    saveHistory(url,platform);
-}
-
-/* =====================================================
-   API PROCESS - MODIFIKASI UNTUK FITUR NO WATERMARK
-   ===================================================== */
-async function openAPI(){
-    if(!currentURL){ alert("Link belum tersedia."); return; }
-    
-    const platform = detectPlatform(currentURL);
-    document.getElementById("loading").style.display = "block";
-    const info = document.getElementById("resultInfo");
-
-    try{
-        if(platform === "TikTok") {
-            // Menggunakan API pihak ketiga publik (TikWM) untuk mendapatkan video TikTok No Watermark
-            const res = await fetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(currentURL));
-            const data = await res.json();
-            document.getElementById("loading").style.display = "none";
-            
-            if(data.code !== 0){
-                throw new Error(data.msg || "Gagal mengambil video TikTok");
-            }
-            
-            showAPIResult({
-                title: data.data.title,
-                thumbnail: data.data.cover,
-                download: data.data.play // Link ini adalah video tanpa watermark
-            });
-        } else {
-            // Jika bukan TikTok, tampilkan peringatan karena endpoint no watermark berbeda-beda
-            document.getElementById("loading").style.display = "none";
-            alert("Maaf, API publik langsung untuk " + platform + " memerlukan pengaturan backend pribadi.");
+    try {
+        const res = await fetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(url));
+        const data = await res.json();
+        
+        loading.style.display = "none";
+        
+        if(data.code !== 0){
+            throw new Error(data.msg || "Gagal mengambil informasi video");
         }
-    } catch(error){
-        document.getElementById("loading").style.display = "none";
-        alert("Gagal memproses:\n" + error.message);
+
+        cachedDownloadUrl = data.data.play;
+        cachedFilename = (data.data.title || "tiktok_video").replace(/[^a-zA-Z0-9]/g, "_").substring(0, 50) + ".mp4";
+
+        document.getElementById("platformName").textContent = platform;
+        
+        // Tampilkan Preview (Bio / Judul & Thumbnail)
+        const info = document.getElementById("resultInfo");
+        let html = "";
+        
+        if(data.data.cover){
+            html += `<img src="${escapeAttribute(data.data.cover)}" style="max-width:100%; max-height:250px; display:block; border-radius:12px; margin:0 auto 12px;">`;
+        }
+        if(data.data.title){ 
+            html += `<b>Bio / Judul:</b> ${escapeHTML(data.data.title)}<br>`; 
+        }
+        if(data.data.author && data.data.author.nickname){
+            html += `<b>Pembuat:</b> ${escapeHTML(data.data.author.nickname)}<br>`;
+        }
+        
+        info.innerHTML = html;
+
+        // Tombol download manual untuk mengunduh langsung ke penyimpanan
+        const btn = document.getElementById("downloadActionBtn");
+        btn.onclick = function(){ 
+            downloadFileDirectly(cachedDownloadUrl, cachedFilename); 
+        };
+
+        result.classList.add("show");
+        saveHistory(url, platform);
+
+    } catch(error) {
+        loading.style.display = "none";
+        alert("Gagal memuat preview:\n" + error.message);
     }
 }
 
-function showAPIResult(data){
-    const info = document.getElementById("resultInfo");
-    let html = "";
-
-    if(data.title){ html += `<b>Judul:</b> ${escapeHTML(data.title)}<br>`; }
-    if(data.thumbnail){
-        html += `<br><img src="${escapeAttribute(data.thumbnail)}" style="max-width:100%; border-radius:12px; margin-bottom:12px;">`;
-    }
-    
-    html += `<br><span style="color:#38bdf8; font-weight:bold;">Video Tanpa Watermark Siap Diunduh!</span>`;
-    info.innerHTML = html;
-
-    const button = document.getElementById("apiButton");
-    if(data.download){
-        button.textContent = "⬇️ Download Media (HD)";
-        button.onclick = function(){
-            window.open(data.download, "_blank");
-        };
+// Fungsi unduh langsung ke penyimpanan (Blob)
+async function downloadFileDirectly(fileUrl, filename) {
+    try {
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = blobUrl;
+        a.download = filename;
+        
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (e) {
+        const a = document.createElement("a");
+        a.href = fileUrl;
+        a.target = "_blank";
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
     }
 }
 

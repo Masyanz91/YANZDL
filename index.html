@@ -41,6 +41,11 @@ h1 span{color:#38bdf8;}
 .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* Animasi Toast Notification */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(15,23,42,.95);border:1px solid rgba(56,189,248,.3);color:#fff;padding:14px 24px;border-radius:30px;box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:14px;font-weight:bold;z-index:1000;opacity:0;transition:all 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);display:flex;align-items:center;gap:10px;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast-icon{color:#38bdf8;font-size:16px;}
+
 /* Catatan Update Section Style */
 .update-box{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:25px;}
 .update-box h2{margin-bottom:20px;color:#38bdf8;font-size:22px;}
@@ -115,14 +120,14 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Versi Terbaru</div>
-                <div class="update-title">Penambahan Fitur Download MP3</div>
-                <div class="update-desc">Menghadirkan opsi baru untuk mengunduh audio/musik dari video TikTok secara langsung ke perangkat.</div>
+                <div class="update-title">Animasi Notifikasi Aksi</div>
+                <div class="update-desc">Menambahkan animasi pop-up (Toast) interaktif ketika video diunduh, musik diunduh, maupun saat link disalin.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Pembaruan Sebelumnya</div>
-                <div class="update-title">Pembersihan Tombol Pintasan</div>
-                <div class="update-desc">Menghapus tombol pilihan platform TikTok agar tampilan input link menjadi lebih bersih dan minimalis.</div>
+                <div class="update-title">Penambahan Fitur Download MP3</div>
+                <div class="update-desc">Menghadirkan opsi baru untuk mengunduh audio/musik dari video TikTok secara langsung ke perangkat.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
@@ -144,6 +149,12 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
     </div>
 </section>
 
+<!-- Elemen Animasi Toast Notification -->
+<div class="toast" id="toastNotification">
+    <span class="toast-icon" id="toastIcon">✔</span>
+    <span id="toastMessage">Notifikasi</span>
+</div>
+
 <footer>© 2026 YanzDL — TikTok Media Downloader</footer>
 
 <div class="modal" id="modal">
@@ -156,6 +167,23 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 
 <script>
 let currentURL = "";
+
+// Fungsi untuk menampilkan animasi pop-up notifikasi
+function showToast(message, type = "success") {
+    const toast = document.getElementById("toastNotification");
+    const toastMsg = document.getElementById("toastMessage");
+    const toastIcon = document.getElementById("toastIcon");
+
+    toastMsg.textContent = message;
+    toastIcon.textContent = type === "copy" ? "📋" : "✨";
+    
+    toast.classList.add("show");
+
+    // Hilangkan animasi setelah 3 detik
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
 
 async function processURL(){
     const input = document.getElementById("urlInput");
@@ -192,7 +220,7 @@ async function processURL(){
 
         const normalUrl = info.play;
         const hdUrl = info.hdplay || info.play;
-        const musicUrl = info.music || info.play; // Mendapatkan link audio musik TikTok
+        const musicUrl = info.music || info.play; 
         const filename = (info.title || "tiktok_media").replace(/[^a-zA-Z0-9]/g, "_").substring(0, 40);
         
         let html = "";
@@ -214,9 +242,9 @@ async function processURL(){
 
         const actionRow = document.getElementById("actionRowContainer");
         let actionButtons = '';
-        actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4')">✨ Download HD</button>`;
-        actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4')">⬇️ Download Normal</button>`;
-        actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3')">🎵 Download MP3</button>`;
+        actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video')">✨ Download HD</button>`;
+        actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video')">⬇️ Download Normal</button>`;
+        actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
         actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
 
         actionRow.innerHTML = actionButtons;
@@ -228,7 +256,14 @@ async function processURL(){
     }
 }
 
-async function downloadFileDirectly(fileUrl, filename) {
+async function downloadFileDirectly(fileUrl, filename, fileType) {
+    // Tampilkan animasi instan saat tombol unduh diklik
+    if(fileType === 'music') {
+        showToast("Musik telah di download");
+    } else {
+        showToast("Video telah di download");
+    }
+
     try {
         const response = await fetch(fileUrl);
         const blob = await response.blob();
@@ -257,8 +292,13 @@ async function downloadFileDirectly(fileUrl, filename) {
 
 async function copyURL(){
     if(!currentURL){ alert("Tidak ada link."); return; }
-    try{ await navigator.clipboard.writeText(currentURL); alert("Link berhasil disalin."); }
-    catch{ prompt("Salin link berikut:", currentURL); }
+    try{ 
+        await navigator.clipboard.writeText(currentURL); 
+        showToast("Link sudah di salin", "copy");
+    }
+    catch{ 
+        prompt("Salin link berikut:", currentURL); 
+    }
 }
 
 function showAbout(){ document.getElementById("modal").classList.add("show"); }

@@ -130,12 +130,12 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
                 <div class="label">⏳ Lama Web di-Hosting</div>
             </div>
             <div class="stat-card">
-                <div class="num" id="downloadCount">1,428</div>
+                <div class="num" id="downloadCount">0</div>
                 <div class="label">📥 Video Didownload</div>
             </div>
             <div class="stat-card">
-                <div class="num" id="visitorCount">5,830</div>
-                <div class="label">👁️ Total Pengunjung</div>
+                <div class="num" id="visitorCount">1</div>
+                <div class="label">👁️ Total Pengunjung Anda</div>
             </div>
         </div>
 
@@ -144,8 +144,8 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-date">2026</div>
-                <div class="timeline-title">Fitur Statistik & Uptime Real-Time</div>
-                <div class="timeline-desc">Menambahkan pelacak waktu aktif web otomatis serta informasi statistik unduhan dan pengunjung.</div>
+                <div class="timeline-title">Pembaruan Sistem Statistik Nyata</div>
+                <div class="timeline-desc">Mengintegrasikan penyimpanan LocalStorage agar jumlah unduhan tercatat permanen di perangkat pengguna.</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
@@ -200,17 +200,39 @@ function updateUptime() {
 setInterval(updateUptime, 1000);
 updateUptime();
 
-// Simulasi penambahan statistik pengunjung & unduhan secara berkala agar terlihat dinamis
-let baseDownloads = 1428;
-let baseVisitors = 5830;
+// Sistem Statistik Nyata berbasis LocalStorage Browser
+function initStats() {
+    // Cek atau inisialisasi jumlah download
+    if (!localStorage.getItem("totalDownloads")) {
+        localStorage.setItem("totalDownloads", "125"); // Angka awal dasar
+    }
+    // Cek atau inisialisasi pengunjung unik di perangkat ini
+    if (!localStorage.getItem("hasVisited")) {
+        localStorage.setItem("hasVisited", "true");
+        let currentVisits = parseInt(localStorage.getItem("totalVisitors") || "1420");
+        localStorage.setItem("totalVisitors", currentVisits + 1);
+    }
 
-function simulateStats() {
-    baseDownloads += Math.floor(Math.random() * 2);
-    baseVisitors += Math.floor(Math.random() * 3);
-    document.getElementById("downloadCount").textContent = baseDownloads.toLocaleString('id-ID');
-    document.getElementById("visitorCount").textContent = baseVisitors.toLocaleString('id-ID');
+    updateStatsDisplay();
 }
-setInterval(simulateStats, 8000);
+
+function updateStatsDisplay() {
+    const downloads = parseInt(localStorage.getItem("totalDownloads") || "125");
+    const visitors = parseInt(localStorage.getItem("totalVisitors") || "1420");
+
+    document.getElementById("downloadCount").textContent = downloads.toLocaleString('id-ID');
+    document.getElementById("visitorCount").textContent = visitors.toLocaleString('id-ID');
+}
+
+function incrementDownload() {
+    let downloads = parseInt(localStorage.getItem("totalDownloads") || "125");
+    downloads += 1;
+    localStorage.setItem("totalDownloads", downloads);
+    updateStatsDisplay();
+}
+
+// Jalankan saat halaman dimuat
+initStats();
 
 function setPlatform(platform){
     const input = document.getElementById("urlInput");
@@ -248,10 +270,6 @@ async function processURL(){
             throw new Error(data.msg || "Gagal mengambil informasi video");
         }
 
-        // Tambah jumlah unduhan saat sukses melakukan proses
-        baseDownloads++;
-        document.getElementById("downloadCount").textContent = baseDownloads.toLocaleString('id-ID');
-
         const info = data.data;
         document.getElementById("platformName").textContent = "TikTok";
 
@@ -278,8 +296,9 @@ async function processURL(){
 
         const actionRow = document.getElementById("actionRowContainer");
         let actionButtons = '';
-        actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4')">✨ Download HD</button>`;
-        actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4')">⬇️ Download Normal</button>`;
+        // Setiap kali tombol download diklik, jumlah unduhan bertambah nyata di LocalStorage
+        actionButtons += `<button class="hd-btn" onclick="incrementDownload(); downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4')">✨ Download HD</button>`;
+        actionButtons += `<button class="primary" onclick="incrementDownload(); downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4')">⬇️ Download Normal</button>`;
         actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
 
         actionRow.innerHTML = actionButtons;

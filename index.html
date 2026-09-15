@@ -36,6 +36,7 @@ h1 span{color:#38bdf8;}
 .primary{background:#38bdf8;color:#03131e;}
 .hd-btn{background:#10b981;color:#fff;}
 .mp3-btn{background:#8b5cf6;color:#fff;}
+.photo-btn{background:#ec4899;color:#fff;}
 .secondary{background:rgba(255,255,255,.08);color:#fff;}
 .loading{display:none;text-align:center;padding:20px;color:#94a3b8;}
 .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
@@ -83,31 +84,31 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 </header>
 
 <section class="hero">
-    <div class="badge">⚡ TikTok Video & MP3 Downloader</div>
-    <h1>Download TikTok<br><span>Video & Audio MP3.</span></h1>
-    <p>Tempel link TikTok untuk memutar video di preview serta mengunduh file video atau musik MP3.</p>
+    <div class="badge">⚡ TikTok Video, Foto & MP3 Downloader</div>
+    <h1>Download TikTok<br><span>Video, Foto & Musik.</span></h1>
+    <p>Tempel link TikTok untuk melihat preview dan mengunduh video, foto carousel, atau audio MP3.</p>
 </section>
 
 <section class="downloader">
     <div class="inputBox">
         <input id="urlInput" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off">
-        <button class="downloadBtn" onclick="processURL()">Cek Video</button>
+        <button class="downloadBtn" onclick="processURL()">Cek Konten</button>
     </div>
 
     <div class="loading" id="loading">
         <div class="spinner"></div>
-        <div>Memuat video dan preview...</div>
+        <div>Memuat media dan preview...</div>
     </div>
 
     <div class="result" id="result">
         <div class="resultTitle">
-            <strong>Preview Pemutar Video & Bio</strong>
+            <strong>Preview Media & Bio</strong>
             <span class="platform" id="platformName">-</span>
         </div>
         <div class="info" id="resultInfo">-</div>
         
         <div class="actionRow" id="actionRowContainer">
-            <!-- Tombol unduh HD / Normal / MP3 dimuat dinamis -->
+            <!-- Tombol unduh dimuat dinamis -->
         </div>
     </div>
 </section>
@@ -120,14 +121,14 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Versi Terbaru</div>
-                <div class="update-title">Animasi Notifikasi Aksi</div>
-                <div class="update-desc">Menambahkan animasi pop-up (Toast) interaktif ketika video diunduh, musik diunduh, maupun saat link disalin.</div>
+                <div class="update-title">Pembaruan Tombol Aksi Input</div>
+                <div class="update-desc">Menggabungkan dan memperbarui teks tombol utama menjadi "Cek Konten" untuk proses pemindaian link yang lebih intuitif.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Pembaruan Sebelumnya</div>
-                <div class="update-title">Penambahan Fitur Download MP3</div>
-                <div class="update-desc">Menghadirkan opsi baru untuk mengunduh audio/musik dari video TikTok secara langsung ke perangkat.</div>
+                <div class="update-title">Penambahan Fitur Download Foto TikTok</div>
+                <div class="update-desc">Mendukung pengunduhan gambar/foto slide dari postingan TikTok secara individual maupun sekaligus.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
@@ -141,17 +142,17 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 
 <section class="cards">
     <div class="card">
-        <div class="icon">🎵</div>
+        <div class="icon">🖼️</div>
         <div>
-            <h3>TikTok Downloader & MP3</h3>
-            <p>Putar video langsung di preview, lalu unduh dalam format Video (HD/Normal) atau Audio (MP3) yang langsung tersimpan otomatis ke penyimpanan perangkat.</p>
+            <h3>TikTok Downloader Komplit</h3>
+            <p>Mendukung pengunduhan Video (HD/Normal), Audio (MP3), serta Slide Foto TikTok dengan mudah dan langsung tersimpan ke perangkat.</p>
         </div>
     </div>
 </section>
 
 <!-- Elemen Animasi Toast Notification -->
 <div class="toast" id="toastNotification">
-    <span class="toast-icon" id="toastIcon">✔</span>
+    <span class="toast-icon" id="toastIcon">✨</span>
     <span id="toastMessage">Notifikasi</span>
 </div>
 
@@ -160,7 +161,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 <div class="modal" id="modal">
     <div class="modalBox">
         <h2>Tentang YanzDL</h2>
-        <p>YanzDL adalah aplikasi web personal untuk mengunduh video dan musik MP3 TikTok secara mudah dengan fitur pemutar video interaktif.</p>
+        <p>YanzDL adalah aplikasi web personal untuk mengunduh video, foto, dan musik MP3 TikTok secara mudah.</p>
         <button class="close" onclick="closeAbout()">Tutup</button>
     </div>
 </div>
@@ -168,7 +169,6 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 <script>
 let currentURL = "";
 
-// Fungsi untuk menampilkan animasi pop-up notifikasi
 function showToast(message, type = "success") {
     const toast = document.getElementById("toastNotification");
     const toastMsg = document.getElementById("toastMessage");
@@ -178,8 +178,6 @@ function showToast(message, type = "success") {
     toastIcon.textContent = type === "copy" ? "📋" : "✨";
     
     toast.classList.add("show");
-
-    // Hilangkan animasi setelah 3 detik
     setTimeout(() => {
         toast.classList.remove("show");
     }, 3000);
@@ -212,54 +210,79 @@ async function processURL(){
         loading.style.display = "none";
         
         if(data.code !== 0){
-            throw new Error(data.msg || "Gagal mengambil informasi video");
+            throw new Error(data.msg || "Gagal mengambil informasi media");
         }
 
         const info = data.data;
         document.getElementById("platformName").textContent = "TikTok";
-
-        const normalUrl = info.play;
-        const hdUrl = info.hdplay || info.play;
-        const musicUrl = info.music || info.play; 
         const filename = (info.title || "tiktok_media").replace(/[^a-zA-Z0-9]/g, "_").substring(0, 40);
         
         let html = "";
-        html += `
-            <div style="margin-bottom:15px; text-align:center; background:#000; border-radius:12px; overflow:hidden;">
-                <video controls controlsList="nodownload" poster="${escapeAttribute(info.cover || '')}" style="max-width:100%; max-height:350px; display:block; margin:0 auto;">
-                    <source src="${escapeAttribute(normalUrl)}" type="video/mp4">
-                    Browser Anda tidak mendukung pemutar video.
-                </video>
-            </div>
-        `;
-        if(info.title){ 
-            html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
-        }
-        if(info.author && info.author.nickname){
-            html += `<div><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
-        }
-        document.getElementById("resultInfo").innerHTML = html;
-
-        const actionRow = document.getElementById("actionRowContainer");
         let actionButtons = '';
-        actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video')">✨ Download HD</button>`;
-        actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video')">⬇️ Download Normal</button>`;
-        actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
-        actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
 
-        actionRow.innerHTML = actionButtons;
+        if (info.images && info.images.length > 0) {
+            html += `<div style="margin-bottom:12px; font-weight:bold; color:#38bdf8;">Ditemukan ${info.images.length} Foto:</div>`;
+            html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:10px; margin-bottom:15px; max-height:250px; overflow-y:auto;">`;
+            
+            info.images.forEach((imgUrl, index) => {
+                html += `<div style="background:#000; border-radius:8px; overflow:hidden; text-align:center;">
+                            <img src="${escapeAttribute(imgUrl)}" style="width:100%; height:100px; object-fit:cover; display:block;">
+                            <button onclick="downloadFileDirectly('${imgUrl}', '${filename}_foto_${index + 1}.jpg', 'photo')" style="width:100%; padding:5px; background:#ec4899; color:#fff; border:0; font-size:11px; cursor:pointer; font-weight:bold;">Unduh</button>
+                         </div>`;
+            });
+            html += `</div>`;
+
+            if(info.title){ 
+                html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
+            }
+
+            actionButtons += `<button class="photo-btn" onclick="downloadAllPhotos(${JSON.stringify(info.images).replace(/"/g, '&quot;')}, '${filename}')">📸 Unduh Semua Foto</button>`;
+            if (info.music) {
+                actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${info.music}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
+            }
+            actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
+
+        } else {
+            const normalUrl = info.play;
+            const hdUrl = info.hdplay || info.play;
+            const musicUrl = info.music || info.play;
+
+            html += `
+                <div style="margin-bottom:15px; text-align:center; background:#000; border-radius:12px; overflow:hidden;">
+                    <video controls controlsList="nodownload" poster="${escapeAttribute(info.cover || '')}" style="max-width:100%; max-height:350px; display:block; margin:0 auto;">
+                        <source src="${escapeAttribute(normalUrl)}" type="video/mp4">
+                        Browser Anda tidak mendukung pemutar video.
+                    </video>
+                </div>
+            `;
+            if(info.title){ 
+                html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
+            }
+            if(info.author && info.author.nickname){
+                html += `<div><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
+            }
+
+            actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video')">✨ Download HD</button>`;
+            actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video')">⬇️ Download Normal</button>`;
+            actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
+            actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
+        }
+
+        document.getElementById("resultInfo").innerHTML = html;
+        document.getElementById("actionRowContainer").innerHTML = actionButtons;
         result.classList.add("show");
 
     } catch(error) {
         loading.style.display = "none";
-        alert("Gagal memuat preview video:\n" + error.message);
+        alert("Gagal memuat preview media:\n" + error.message);
     }
 }
 
 async function downloadFileDirectly(fileUrl, filename, fileType) {
-    // Tampilkan animasi instan saat tombol unduh diklik
     if(fileType === 'music') {
         showToast("Musik telah di download");
+    } else if(fileType === 'photo') {
+        showToast("Foto telah di download");
     } else {
         showToast("Video telah di download");
     }
@@ -287,6 +310,14 @@ async function downloadFileDirectly(fileUrl, filename, fileType) {
         document.body.appendChild(a);
         a.click();
         a.remove();
+    }
+}
+
+async function downloadAllPhotos(imagesArray, baseFilename) {
+    showToast("Semua foto sedang di download");
+    for (let i = 0; i < imagesArray.length; i++) {
+        await downloadFileDirectly(imagesArray[i], `${baseFilename}_foto_${i + 1}.jpg`, 'photo');
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 }
 

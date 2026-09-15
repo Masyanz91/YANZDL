@@ -26,9 +26,6 @@ h1 span{color:#38bdf8;}
 .inputBox input::placeholder{color:#687386;}
 .downloadBtn{border:0;background:#38bdf8;color:#02111c;padding:0 22px;border-radius:12px;font-weight:800;cursor:pointer;}
 .downloadBtn:hover{filter:brightness(1.1);}
-.quick{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px;}
-.quick button{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.05);color:#ddd;padding:9px 13px;border-radius:30px;cursor:pointer;}
-.quick button:hover{border-color:#38bdf8;color:#7dd3fc;}
 .result{display:none;margin-top:25px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:left;overflow:hidden;}
 .result.show{display:block;}
 .resultTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
@@ -91,10 +88,6 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
         <button class="downloadBtn" onclick="processURL()">Cek Video</button>
     </div>
 
-    <div class="quick">
-        <button onclick="setPlatform('tiktok')">🎵 TikTok</button>
-    </div>
-
     <div class="loading" id="loading">
         <div class="spinner"></div>
         <div>Memuat video dan preview...</div>
@@ -121,8 +114,8 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Versi Terbaru</div>
-                <div class="update-title">Pembersihan Interface & Pembaruan Catatan</div>
-                <div class="update-desc">Menghapus bagian statistik dan mengubah timeline menjadi catatan pembaruan web yang lebih ringkas.</div>
+                <div class="update-title">Pembersihan Tombol Pintasan</div>
+                <div class="update-desc">Menghapus tombol pilihan platform TikTok agar tampilan input link menjadi lebih bersih dan minimalis.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
@@ -162,12 +155,6 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 
 <script>
 let currentURL = "";
-
-function setPlatform(platform){
-    const input = document.getElementById("urlInput");
-    if(platform === 'tiktok') input.value = "https://www.tiktok.com/";
-    input.focus();
-}
 
 async function processURL(){
     const input = document.getElementById("urlInput");

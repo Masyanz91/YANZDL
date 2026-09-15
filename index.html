@@ -20,7 +20,7 @@ nav button:hover{background:rgba(56,189,248,.15);}
 h1{font-size:clamp(35px,7vw,68px);line-height:1.05;margin-bottom:20px;}
 h1 span{color:#38bdf8;}
 .hero p{color:#9ca3af;max-width:650px;margin:auto;line-height:1.7;}
-.downloader, .timeline-section{max-width:850px;margin:40px auto;padding:20px;}
+.downloader, .update-section{max-width:850px;margin:40px auto;padding:20px;}
 .inputBox{padding:8px;display:flex;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:17px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
 .inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:white;padding:15px;font-size:15px;}
 .inputBox input::placeholder{color:#687386;}
@@ -43,21 +43,16 @@ h1 span{color:#38bdf8;}
 .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Statistik & Timeline Section Style */
-.timeline-box{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:25px;}
-.timeline-box h2{margin-bottom:20px;color:#38bdf8;font-size:22px;}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-bottom:30px;}
-.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:18px;border-radius:14px;text-align:center;}
-.stat-card .num{font-size:20px;font-weight:800;color:#38bdf8;margin-bottom:5px;}
-.stat-card .label{font-size:13px;color:#9ca3af;}
-
-.timeline{position:relative;padding-left:25px;border-left:2px solid rgba(56,189,248,.3);margin-top:10px;}
-.timeline-item{position:relative;margin-bottom:25px;}
-.timeline-item:last-child{margin-bottom:0;}
-.timeline-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
-.timeline-date{font-size:12px;color:#38bdf8;font-weight:bold;margin-bottom:4px;}
-.timeline-title{font-size:15px;font-weight:bold;margin-bottom:4px;color:#fff;}
-.timeline-desc{font-size:13px;color:#9ca3af;line-height:1.5;}
+/* Catatan Update Section Style */
+.update-box{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:25px;}
+.update-box h2{margin-bottom:20px;color:#38bdf8;font-size:22px;}
+.update-list{position:relative;padding-left:25px;border-left:2px solid rgba(56,189,248,.3);}
+.update-item{position:relative;margin-bottom:25px;}
+.update-item:last-child{margin-bottom:0;}
+.update-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
+.update-date{font-size:12px;color:#38bdf8;font-weight:bold;margin-bottom:4px;}
+.update-title{font-size:15px;font-weight:bold;margin-bottom:4px;color:#fff;}
+.update-desc{font-size:13px;color:#9ca3af;line-height:1.5;}
 
 .cards{max-width:850px;margin:30px auto;padding:20px;display:grid;grid-template-columns:1fr;gap:15px;}
 .card{padding:22px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:17px;display:flex;align-items:center;gap:20px;}
@@ -118,46 +113,28 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
     </div>
 </section>
 
-<!-- Statistik & Timeline Web Section -->
-<section class="timeline-section">
-    <div class="timeline-box">
-        <h2>📊 Statistik & Timeline Web</h2>
-        
-        <!-- Kotak Statistik Web -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="num" id="uptimeCounter">Menghitung...</div>
-                <div class="label">⏳ Lama Web di-Hosting</div>
+<!-- Catatan Update Section -->
+<section class="update-section">
+    <div class="update-box">
+        <h2>📜 Catatan Update</h2>
+        <div class="update-list">
+            <div class="update-item">
+                <div class="update-dot"></div>
+                <div class="update-date">Versi Terbaru</div>
+                <div class="update-title">Pembersihan Interface & Pembaruan Catatan</div>
+                <div class="update-desc">Menghapus bagian statistik dan mengubah timeline menjadi catatan pembaruan web yang lebih ringkas.</div>
             </div>
-            <div class="stat-card">
-                <div class="num" id="downloadCount">0</div>
-                <div class="label">📥 Video Didownload</div>
+            <div class="update-item">
+                <div class="update-dot"></div>
+                <div class="update-date">Pembaruan Sebelumnya</div>
+                <div class="update-title">Optimasi Tampilan Seluler</div>
+                <div class="update-desc">Peningkatan tata letak kotak preview video agar lebih responsif di perangkat Android maupun komputer.</div>
             </div>
-            <div class="stat-card">
-                <div class="num" id="visitorCount">1</div>
-                <div class="label">👁️ Total Pengunjung Anda</div>
-            </div>
-        </div>
-
-        <div style="font-size:15px; font-weight:bold; margin-bottom:12px; color:#fff;">📌 Riwayat Pengembangan</div>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2026</div>
-                <div class="timeline-title">Pembaruan Sistem Statistik Nyata</div>
-                <div class="timeline-desc">Mengintegrasikan penyimpanan LocalStorage agar jumlah unduhan tercatat permanen di perangkat pengguna.</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">Versi Sebelumnya</div>
-                <div class="timeline-title">Optimasi Tampilan Android</div>
-                <div class="timeline-desc">Peningkatan tata letak kotak preview video agar lebih responsif di berbagai ukuran layar ponsel.</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">Rilis Awal</div>
-                <div class="timeline-title">Peluncuran YanzDL</div>
-                <div class="timeline-desc">Inisialisasi sistem downloader video TikTok dengan pemutar media interaktif dan opsi HD.</div>
+            <div class="update-item">
+                <div class="update-dot"></div>
+                <div class="update-date">Rilis Awal</div>
+                <div class="update-title">Peluncuran YanzDL</div>
+                <div class="update-desc">Inisialisasi sistem downloader video TikTok dengan pemutar media interaktif dan opsi kualitas HD.</div>
             </div>
         </div>
     </div>
@@ -185,54 +162,6 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 
 <script>
 let currentURL = "";
-
-// Ubah tanggal di bawah ini sesuai tanggal web Anda mulai di-hosting (Format: YYYY-MM-DD)
-const hostingStartDate = new Date("2026-01-01T00:00:00");
-
-function updateUptime() {
-    const now = new Date();
-    const diffTime = Math.abs(now - hostingStartDate);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
-    
-    document.getElementById("uptimeCounter").textContent = `${diffDays} Hari ${diffHours} Jam`;
-}
-setInterval(updateUptime, 1000);
-updateUptime();
-
-// Sistem Statistik Nyata berbasis LocalStorage Browser
-function initStats() {
-    // Cek atau inisialisasi jumlah download
-    if (!localStorage.getItem("totalDownloads")) {
-        localStorage.setItem("totalDownloads", "125"); // Angka awal dasar
-    }
-    // Cek atau inisialisasi pengunjung unik di perangkat ini
-    if (!localStorage.getItem("hasVisited")) {
-        localStorage.setItem("hasVisited", "true");
-        let currentVisits = parseInt(localStorage.getItem("totalVisitors") || "1420");
-        localStorage.setItem("totalVisitors", currentVisits + 1);
-    }
-
-    updateStatsDisplay();
-}
-
-function updateStatsDisplay() {
-    const downloads = parseInt(localStorage.getItem("totalDownloads") || "125");
-    const visitors = parseInt(localStorage.getItem("totalVisitors") || "1420");
-
-    document.getElementById("downloadCount").textContent = downloads.toLocaleString('id-ID');
-    document.getElementById("visitorCount").textContent = visitors.toLocaleString('id-ID');
-}
-
-function incrementDownload() {
-    let downloads = parseInt(localStorage.getItem("totalDownloads") || "125");
-    downloads += 1;
-    localStorage.setItem("totalDownloads", downloads);
-    updateStatsDisplay();
-}
-
-// Jalankan saat halaman dimuat
-initStats();
 
 function setPlatform(platform){
     const input = document.getElementById("urlInput");
@@ -296,9 +225,8 @@ async function processURL(){
 
         const actionRow = document.getElementById("actionRowContainer");
         let actionButtons = '';
-        // Setiap kali tombol download diklik, jumlah unduhan bertambah nyata di LocalStorage
-        actionButtons += `<button class="hd-btn" onclick="incrementDownload(); downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4')">✨ Download HD</button>`;
-        actionButtons += `<button class="primary" onclick="incrementDownload(); downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4')">⬇️ Download Normal</button>`;
+        actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4')">✨ Download HD</button>`;
+        actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4')">⬇️ Download Normal</button>`;
         actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
 
         actionRow.innerHTML = actionButtons;

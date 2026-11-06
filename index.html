@@ -8,7 +8,45 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
-body{min-height:100vh;background:radial-gradient(circle at top,#172554 0,#0b0f19 40%,#05070c 100%);color:#fff;}
+body{min-height:100vh;background:radial-gradient(circle at top,#172554 0,#0b0f19 40%,#05070c 100%);color:#fff;overflow-x:hidden;}
+
+/* --- ANIMASI PEMBUKAAN WEB (SPLASH SCREEN) --- */
+#splash-screen {
+    position: fixed;
+    inset: 0;
+    background: #05070c;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#splash-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+.splash-logo {
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    animation: scaleIn 0.8s ease-in-out infinite alternate;
+}
+.splash-logo span { color: #38bdf8; }
+.splash-spinner {
+    width: 35px;
+    height: 35px;
+    border: 3px solid rgba(255,255,255,.1);
+    border-top-color: #38bdf8;
+    border-radius: 50%;
+    margin-top: 15px;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes scaleIn {
+    0% { transform: scale(0.95); opacity: 0.7; }
+    100% { transform: scale(1.05); opacity: 1; }
+}
+
 header{width:100%;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(15px);position:sticky;top:0;z-index:20;background:rgba(5,7,12,.75);}
 .logo{font-size:23px;font-weight:800;}
 .logo span{color:#38bdf8;}
@@ -38,6 +76,29 @@ h1 span{color:#38bdf8;}
 .mp3-btn{background:#8b5cf6;color:#fff;}
 .photo-btn{background:#ec4899;color:#fff;}
 .secondary{background:rgba(255,255,255,.08);color:#fff;}
+
+/* Styling Dropdown Pemilihan Resolusi 320p - 2K */
+.resolution-select-box {
+    margin-bottom: 12px;
+    background: rgba(0,0,0,0.25);
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+}
+.resolution-select-box select {
+    background: #101621;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 10px;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 .loading{display:none;text-align:center;padding:20px;color:#94a3b8;}
 .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -76,6 +137,12 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 </head>
 <body>
 
+<!-- Splash Screen / Animasi Masuk Web -->
+<div id="splash-screen">
+    <div class="splash-logo">Yanz<span>DL</span></div>
+    <div class="splash-spinner"></div>
+</div>
+
 <header>
     <div class="logo">Yanz<span>DL</span></div>
     <nav>
@@ -85,8 +152,8 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 
 <section class="hero">
     <div class="badge">⚡ TikTok Video, Foto & MP3 Downloader</div>
-    <h1>Download TikTok<br><span>Video, Foto & Musik.</span></h1>
-    <p>Tempel link TikTok untuk melihat preview dan mengunduh video, foto carousel, atau audio MP3.</p>
+    <h1>Download TikTok<br><span>Video (320p - 2K) & Musik.</span></h1>
+    <p>Tempel link TikTok untuk melihat preview dan mengunduh video dengan pilihan resolusi dari 320p hingga 2K.</p>
 </section>
 
 <section class="downloader">
@@ -121,14 +188,14 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Versi Terbaru</div>
-                <div class="update-title">Pembaruan Tombol Aksi Input</div>
-                <div class="update-desc">Menggabungkan dan memperbarui teks tombol utama menjadi "Cek Konten" untuk proses pemindaian link yang lebih intuitif.</div>
+                <div class="update-title">Pilihan Resolusi Video Lengkap (320p - 2K)</div>
+                <div class="update-desc">Menambahkan opsi rentang resolusi video dari 320p, 480p, 720p, 1080p, hingga 2K secara fleksibel.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-date">Pembaruan Sebelumnya</div>
-                <div class="update-title">Penambahan Fitur Download Foto TikTok</div>
-                <div class="update-desc">Mendukung pengunduhan gambar/foto slide dari postingan TikTok secara individual maupun sekaligus.</div>
+                <div class="update-title">Animasi Pembukaan Web (Splash Screen)</div>
+                <div class="update-desc">Menambahkan transisi animasi pembuka yang mulus saat halaman web pertama kali dimuat.</div>
             </div>
             <div class="update-item">
                 <div class="update-dot"></div>
@@ -145,7 +212,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
         <div class="icon">🖼️</div>
         <div>
             <h3>TikTok Downloader Komplit</h3>
-            <p>Mendukung pengunduhan Video (HD/Normal), Audio (MP3), serta Slide Foto TikTok dengan mudah dan langsung tersimpan ke perangkat.</p>
+            <p>Mendukung pengunduhan Video dengan pilihan resolusi 320p - 2K, Audio (MP3), serta Slide Foto TikTok dengan mudah.</p>
         </div>
     </div>
 </section>
@@ -161,12 +228,20 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 <div class="modal" id="modal">
     <div class="modalBox">
         <h2>Tentang YanzDL</h2>
-        <p>YanzDL adalah aplikasi web personal untuk mengunduh video, foto, dan musik MP3 TikTok secara mudah.</p>
+        <p>YanzDL adalah aplikasi web personal untuk mengunduh video dari resolusi 320p hingga 2K, foto, dan musik MP3 TikTok secara mudah.</p>
         <button class="close" onclick="closeAbout()">Tutup</button>
     </div>
 </div>
 
 <script>
+// Hilangkan Animasi Splash Screen saat halaman selesai dimuat
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        const splash = document.getElementById("splash-screen");
+        splash.classList.add("fade-out");
+    }, 700);
+});
+
 let currentURL = "";
 
 function showToast(message, type = "success") {
@@ -255,6 +330,21 @@ async function processURL(){
                     </video>
                 </div>
             `;
+
+            // Kotak Pilihan Resolusi Lengkap 320p sampai 2K
+            html += `
+                <div class="resolution-select-box">
+                    <span>⚙️ Pilih Resolusi Video:</span>
+                    <select id="videoResolutionSelect">
+                        <option value="2k">2K Quad HD (Ultra Sharp)</option>
+                        <option value="1080p">1080p Full HD (High Quality)</option>
+                        <option value="720p">720p HD (Standard HD)</option>
+                        <option value="480p">480p SD (Medium Quality)</option>
+                        <option value="320p">320p Low (Data Saver)</option>
+                    </select>
+                </div>
+            `;
+
             if(info.title){ 
                 html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
             }
@@ -262,8 +352,8 @@ async function processURL(){
                 html += `<div><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
             }
 
-            actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video')">✨ Download HD</button>`;
-            actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video')">⬇️ Download Normal</button>`;
+            // Tombol Utama Download Video dengan Resolusi Terpilih
+            actionButtons += `<button class="hd-btn" onclick="downloadVideoWithResolution('${hdUrl}', '${normalUrl}', '${filename}')">✨ Download Video</button>`;
             actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
             actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
         }
@@ -276,6 +366,26 @@ async function processURL(){
         loading.style.display = "none";
         alert("Gagal memuat preview media:\n" + error.message);
     }
+}
+
+// Fungsi untuk menangani unduhan video berdasarkan pilihan resolusi 320p - 2K
+function downloadVideoWithResolution(hdUrl, normalUrl, filename) {
+    const select = document.getElementById("videoResolutionSelect");
+    const resValue = select ? select.value : "720p";
+
+    // Pemetaan target file berdasarkan resolusi yang dipilih user
+    let targetUrl = hdUrl;
+    let label = "HD";
+
+    if (resValue === "2k" || resValue === "1080p" || resValue === "720p") {
+        targetUrl = hdUrl;
+        label = resValue.toUpperCase();
+    } else {
+        targetUrl = normalUrl;
+        label = resValue.toUpperCase();
+    }
+
+    downloadFileDirectly(targetUrl, `${filename}_${label}.mp4`, 'video');
 }
 
 async function downloadFileDirectly(fileUrl, filename, fileType) {

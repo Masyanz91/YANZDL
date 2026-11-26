@@ -7,8 +7,8 @@
 <title>Yanz Downloader - TikTok Direct Downloader</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-body{min-height:100vh;background:radial-gradient(circle at top,#1d4ed8 0,#0b0f19 38%,#05070c 100%);color:#f8fafc;overflow-x:hidden;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums;}
+body{min-height:100vh;background-color:#05070c;background-image:radial-gradient(ellipse 75% 50% at 15% 0%,rgba(56,189,248,.16),transparent 65%),radial-gradient(ellipse 65% 48% at 88% 12%,rgba(129,140,248,.14),transparent 65%),radial-gradient(ellipse 80% 55% at 50% 100%,rgba(14,165,233,.09),transparent 70%);color:#f8fafc;overflow-x:hidden;}
 
 /* --- ANIMASI PEMBUKAAN WEB (SPLASH SCREEN) --- */
 #splash-screen{position:fixed;inset:0;background:#05070c;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.55s ease,visibility 0.55s ease;}
@@ -23,8 +23,9 @@ header{width:100%;padding:18px 6%;display:flex;justify-content:space-between;ali
 .logo{font-size:23px;font-weight:800;letter-spacing:-0.5px;}
 .logo span{color:#38bdf8;}
 nav{display:flex;gap:10px;}
-nav button{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.1);padding:9px 14px;border-radius:11px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s ease;}
-nav button:hover{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.35);color:#fff;}
+nav button{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.1);padding:9px 14px;border-radius:11px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);}
+nav button:hover{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.38);color:#fff;transform:translateY(-1px);box-shadow:0 6px 18px rgba(56,189,248,.12);}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid rgba(56,189,248,.75);outline-offset:2px;}
 
 /* --- HERO --- */
 .hero{max-width:1000px;margin:64px auto 0;padding:16px 20px;text-align:center;}
@@ -35,28 +36,54 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 
 /* --- DOWNLOADER & UPDATE SECTION --- */
 .downloader,.update-section{max-width:850px;margin:34px auto;padding:0 20px;}
-.inputBox{padding:8px;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color 0.2s ease,box-shadow 0.2s ease;}
-.inputBox:focus-within{border-color:rgba(56,189,248,.5);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 3px rgba(56,189,248,.14);}
+.inputBox{padding:8px;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color 0.25s ease,box-shadow 0.25s ease,background-color 0.25s ease;}
+.inputBox:hover{border-color:rgba(255,255,255,.2);background:rgba(15,23,42,.74);}
+.inputBox:focus-within{border-color:rgba(56,189,248,.55);background:rgba(15,23,42,.82);box-shadow:0 20px 60px rgba(0,0,0,.42),0 0 0 3px rgba(56,189,248,.15);}
 .inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:#fff;padding:14px 16px;font-size:15px;}
 .inputBox input::placeholder{color:#687386;}
-.pasteBtn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#e2e8f0;padding:12px 14px;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.2s ease;white-space:nowrap;}
-.pasteBtn:hover{background:rgba(255,255,255,.12);border-color:rgba(56,189,248,.35);color:#7dd3fc;}
-.downloadBtn{border:0;background:linear-gradient(135deg,#38bdf8 0%,#0ea5e9 100%);color:#02111c;padding:14px 22px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;transition:all 0.2s ease;white-space:nowrap;box-shadow:0 6px 18px rgba(56,189,248,.25);}
-.downloadBtn:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);}
+.pasteBtn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#e2e8f0;padding:12px 14px;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
+.pasteBtn:hover{background:rgba(255,255,255,.12);border-color:rgba(56,189,248,.38);color:#7dd3fc;transform:translateY(-1px);}
+.pasteBtn:active{transform:translateY(0) scale(0.98);}
+.downloadBtn{border:0;background:linear-gradient(135deg,#38bdf8 0%,#0ea5e9 100%);color:#02111c;padding:14px 22px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;box-shadow:0 6px 18px rgba(56,189,248,.25);}
+.downloadBtn:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 10px 24px rgba(56,189,248,.34);}
+.downloadBtn:active:not(:disabled){transform:translateY(0) scale(0.98);}
 .downloadBtn:disabled{opacity:0.65;cursor:wait;}
 
 .errorBox{display:none;margin-top:16px;background:rgba(127,29,29,.35);border:1px solid rgba(248,113,113,.35);color:#fecaca;padding:14px 16px;border-radius:14px;font-size:13.5px;line-height:1.55;backdrop-filter:blur(12px);}
 .errorBox.show{display:block;animation:fadeUp 0.25s ease;}
 
-.result{display:none;margin-top:22px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;text-align:left;overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);}
+.result{display:none;margin-top:22px;background:rgba(15,23,42,.66);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;text-align:left;overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);transition:border-color 0.25s ease,box-shadow 0.25s ease;}
+.result:hover{border-color:rgba(255,255,255,.18);box-shadow:0 24px 56px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.1);}
 .result.show{display:block;animation:fadeUp 0.35s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.resultTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.resultTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);}
 .platform{color:#38bdf8;font-weight:700;font-size:13px;padding:4px 10px;border-radius:8px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);}
-.info{background:rgba(2,6,23,.45);border:1px solid rgba(255,255,255,.06);padding:15px;border-radius:14px;color:#cbd5e1;line-height:1.65;font-size:14px;word-break:break-word;overflow-wrap:break-word;}
+.info{display:flex;flex-direction:column;gap:14px;color:#cbd5e1;line-height:1.65;font-size:14px;word-break:break-word;overflow-wrap:break-word;}
+.mediaStage{background:rgba(2,6,23,.58);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;}
+.mediaStageHeader{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;font-size:12.5px;font-weight:700;color:#7dd3fc;flex-wrap:wrap;}
+.selectionToolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;padding:9px 11px;border-radius:10px;background:rgba(15,23,42,.72);border:1px solid rgba(255,255,255,.07);flex-wrap:wrap;font-size:12px;}
+.selectionCount{color:#e2e8f0;font-weight:700;}
+.selectionActions{display:flex;gap:6px;flex-wrap:wrap;}
+.miniSelectBtn{background:rgba(255,255,255,.07);color:#cbd5e1;border:1px solid rgba(255,255,255,.12);padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all 0.2s ease;}
+.miniSelectBtn:hover{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.38);color:#fff;}
+.videoFrame{text-align:center;background:#000;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+.videoFrame video{max-width:100%;max-height:350px;display:block;margin:0 auto;}
+.photoGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:12px;max-height:280px;overflow-y:auto;padding-right:2px;}
+.photoTile{position:relative;background:rgba(2,6,23,.85);border-radius:10px;overflow:hidden;text-align:center;border:1.5px solid rgba(255,255,255,.09);transition:border-color 0.2s ease,transform 0.2s ease,box-shadow 0.2s ease;}
+.photoTile.selected{border-color:#38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.22);}
+.photoTile:hover{border-color:rgba(56,189,248,.45);transform:translateY(-2px);}
+.photoCheckWrap{position:absolute;top:7px;left:7px;z-index:2;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;background:rgba(2,6,23,.78);border:1px solid rgba(255,255,255,.25);cursor:pointer;backdrop-filter:blur(6px);}
+.photoCheckWrap input{width:14px;height:14px;accent-color:#38bdf8;cursor:pointer;}
+.photoTile img{width:100%;height:108px;object-fit:cover;display:block;cursor:pointer;}
+.photoTile button{width:100%;padding:7px 6px;background:#ec4899;color:#fff;border:0;font-size:11.5px;cursor:pointer;font-weight:700;transition:filter 0.2s ease;}
+.photoTile button:hover:not(:disabled){filter:brightness(1.12);}
+.metaCard{background:rgba(2,6,23,.45);border:1px solid rgba(255,255,255,.06);padding:14px 16px;border-radius:14px;display:flex;flex-direction:column;gap:8px;}
+.metaRow{font-size:13.5px;color:#cbd5e1;}
+.metaRow b{color:#f8fafc;font-weight:700;}
 .actionRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
-.actionRow button{flex:1;min-width:130px;padding:12px 14px;border:0;border-radius:11px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.2s ease;}
-.actionRow button:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);}
+.actionRow button{flex:1;min-width:130px;padding:12px 14px;border:0;border-radius:11px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);}
+.actionRow button:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.28);}
+.actionRow button:active:not(:disabled){transform:translateY(0) scale(0.98);}
 .actionRow button:disabled{opacity:0.65;cursor:wait;}
 .primary{background:#38bdf8;color:#03131e;}
 .hd-btn{background:#10b981;color:#fff;}
@@ -77,16 +104,19 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .toast-icon{color:#38bdf8;font-size:16px;}
 
 /* Catatan Update Section Style */
-.update-box{background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);}
+.update-box{background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:border-color 0.25s ease;}
+.update-box:hover{border-color:rgba(255,255,255,.16);}
 .update-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
 .update-box h2{color:#38bdf8;font-size:21px;font-weight:800;}
-.toggle-updates-btn{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.12);padding:7px 13px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s ease;}
-.toggle-updates-btn:hover{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.35);color:#7dd3fc;}
+.toggle-updates-btn{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.12);padding:7px 13px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);}
+.toggle-updates-btn:hover{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.38);color:#7dd3fc;transform:translateY(-1px);}
+.toggle-updates-btn:active{transform:translateY(0) scale(0.98);}
 .update-list{position:relative;padding-left:24px;border-left:2px solid rgba(56,189,248,.3);}
-.update-item{position:relative;margin-bottom:22px;}
+.update-item{position:relative;margin-bottom:22px;padding:10px 12px;margin-left:-12px;border-radius:12px;transition:background-color 0.2s ease;}
+.update-item:hover{background:rgba(255,255,255,.03);}
 .update-item:last-child{margin-bottom:0;}
 .update-item.collapsed-item{display:none;}
-.update-dot{position:absolute;left:-31px;top:3px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
+.update-dot{position:absolute;left:-19px;top:14px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
 .update-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
 .update-date{font-size:12px;color:#38bdf8;font-weight:700;}
 .update-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(129,140,248,.16);border:1px solid rgba(129,140,248,.35);color:#c7d2fe;}
@@ -94,7 +124,8 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .update-desc{font-size:13px;color:#9ca3af;line-height:1.55;}
 
 .cards{max-width:850px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:1fr;gap:15px;}
-.card{padding:22px;background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:18px;display:flex;align-items:center;gap:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);}
+.card{padding:22px;background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:18px;display:flex;align-items:center;gap:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:all 0.24s cubic-bezier(0.22,1,0.36,1);}
+.card:hover{border-color:rgba(56,189,248,.3);background:rgba(15,23,42,.72);transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.1);}
 .icon{font-size:34px;}
 .card h3{margin-bottom:5px;font-size:17px;}
 .card p{color:#94a3b8;font-size:14px;line-height:1.6;}
@@ -105,7 +136,8 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
 .modalBox{width:100%;max-width:450px;background:#101621;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:25px;box-shadow:0 25px 50px rgba(0,0,0,.5);}
 .modalBox h2{margin-bottom:14px;}
 .modalBox p{color:#9ca3af;line-height:1.7;font-size:14px;}
-.close{width:100%;margin-top:20px;padding:12px;border:0;border-radius:11px;background:#38bdf8;color:#03131e;cursor:pointer;font-weight:800;}
+.close{width:100%;margin-top:20px;padding:12px;border:0;border-radius:11px;background:#38bdf8;color:#03131e;cursor:pointer;font-weight:800;transition:all 0.2s ease;}
+.close:hover{filter:brightness(1.08);transform:translateY(-1px);}
 
 @media(max-width:600px){
     header{padding:15px 5%;}
@@ -116,6 +148,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     .inputBox input{padding:12px;}
     .pasteBtn,.downloadBtn{width:100%;padding:12px;}
     .update-box,.result,.card{padding:18px;}
+    .photoGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;}
     .actionRow{flex-direction:column;}
     .card{flex-direction:column;text-align:center;gap:12px;}
 }
@@ -176,13 +209,31 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     <div class="update-box">
         <div class="update-header">
             <h2>📜 Catatan Update</h2>
-            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (10)</button>
+            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (12)</button>
         </div>
         <div class="update-list" id="updateList">
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-meta">
                     <span class="update-date">Versi Aktif</span>
+                    <span class="update-pill">Foto</span>
+                </div>
+                <div class="update-title">Fitur Pilih Foto Carousel yang Diunduh</div>
+                <div class="update-desc">Menambahkan seleksi centang pada tiap foto slide, tombol Pilih Semua / Batal Pilih, serta tombol Unduh Terpilih untuk mengunduh foto pilihan saja.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Tampilan</span>
+                </div>
+                <div class="update-title">Mesh Glow, Pratinjau Terstruktur & Transisi Halus</div>
+                <div class="update-desc">Menerapkan mesh glow lembut pada latar belakang, memisahkan area media dan metadata pratinjau secara terstruktur, memperhalus efek hover/focus, serta mengaktifkan angka tabular.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
                     <span class="update-pill">Stabilitas</span>
                 </div>
                 <div class="update-title">Penanganan Error & Fallback API Cadangan</div>
@@ -278,7 +329,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
         <div class="icon">🖼️</div>
         <div>
             <h3>TikTok Downloader Komplit</h3>
-            <p>Mendukung pengunduhan Video (HD/Normal), Audio (MP3), serta Slide Foto TikTok dengan mudah dan langsung tersimpan ke perangkat.</p>
+            <p>Mendukung pengunduhan Video (HD/Normal), Audio (MP3), serta Slide Foto TikTok (pilih satuan, pilihan tertentu, atau semua) dengan mudah.</p>
         </div>
     </div>
 </section>
@@ -324,6 +375,8 @@ const TIKTOK_API_ENDPOINTS = [
 ];
 
 let currentURL = "";
+let currentCarouselImages = [];
+let currentCarouselFilename = "tiktok_media";
 let toastTimer = null;
 
 function showToast(message, type = "success") {
@@ -466,6 +519,46 @@ function toggleUpdatesList() {
     btn.textContent = !isExpanded ? "Ringkas" : `Lihat Semua (${totalItems})`;
 }
 
+function syncPhotoSelectionUI() {
+    const checkboxes = document.querySelectorAll(".photo-select-cb");
+    let selectedCount = 0;
+
+    checkboxes.forEach(cb => {
+        const tile = cb.closest(".photoTile");
+        if (cb.checked) {
+            selectedCount++;
+            if (tile) tile.classList.add("selected");
+        } else {
+            if (tile) tile.classList.remove("selected");
+        }
+    });
+
+    const countLabel = document.getElementById("selectedPhotosCount");
+    if (countLabel) {
+        countLabel.textContent = `${selectedCount} / ${checkboxes.length} dipilih`;
+    }
+
+    const selectedBtn = document.getElementById("downloadSelectedPhotosBtn");
+    if (selectedBtn) {
+        selectedBtn.textContent = `✅ Unduh Terpilih (${selectedCount})`;
+    }
+}
+
+function togglePhotoSelection(index) {
+    const cb = document.getElementById(`photoCb_${index}`);
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    syncPhotoSelectionUI();
+}
+
+function setAllPhotosSelection(checked) {
+    const checkboxes = document.querySelectorAll(".photo-select-cb");
+    checkboxes.forEach(cb => {
+        cb.checked = checked;
+    });
+    syncPhotoSelectionUI();
+}
+
 async function pasteURL() {
     const input = document.getElementById("urlInput");
     clearError();
@@ -495,6 +588,7 @@ async function processURL(){
 
     clearError();
     result.classList.remove("show");
+    currentCarouselImages = [];
 
     if(!url) {
         showError("Silakan tempel atau masukkan link TikTok terlebih dahulu.");
@@ -531,26 +625,48 @@ async function processURL(){
         let actionButtons = '';
 
         if (info.images && info.images.length > 0) {
-            html += `<div style="margin-bottom:12px; font-weight:bold; color:#38bdf8;">Ditemukan ${info.images.length} Foto:</div>`;
-            html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:10px; margin-bottom:15px; max-height:250px; overflow-y:auto;">`;
+            currentCarouselImages = info.images.slice();
+            currentCarouselFilename = filename;
+
+            html += `<div class="mediaStage">`;
+            html += `<div class="mediaStageHeader"><span>🖼️ Slide Foto Carousel</span><span>${info.images.length} Foto</span></div>`;
+            html += `<div class="selectionToolbar">
+                        <span class="selectionCount" id="selectedPhotosCount">${info.images.length} / ${info.images.length} dipilih</span>
+                        <div class="selectionActions">
+                            <button type="button" class="miniSelectBtn" onclick="setAllPhotosSelection(true)">Pilih Semua</button>
+                            <button type="button" class="miniSelectBtn" onclick="setAllPhotosSelection(false)">Batal Pilih</button>
+                        </div>
+                     </div>`;
+            html += `<div class="photoGrid">`;
             
             info.images.forEach((imgUrl, index) => {
-                html += `<div style="background:#000; border-radius:10px; overflow:hidden; text-align:center; border:1px solid rgba(255,255,255,.08);">
-                            <img src="${escapeAttribute(imgUrl)}" style="width:100%; height:100px; object-fit:cover; display:block;">
-                            <button onclick="downloadFileDirectly('${imgUrl}', '${filename}_foto_${index + 1}.jpg', 'photo', this)" style="width:100%; padding:6px; background:#ec4899; color:#fff; border:0; font-size:11px; cursor:pointer; font-weight:bold;">Unduh</button>
+                html += `<div class="photoTile selected" id="photoTile_${index}">
+                            <label class="photoCheckWrap" title="Pilih foto ${index + 1}">
+                                <input type="checkbox" id="photoCb_${index}" class="photo-select-cb" checked onchange="syncPhotoSelectionUI()">
+                            </label>
+                            <img src="${escapeAttribute(imgUrl)}" alt="Foto ${index + 1}" onclick="togglePhotoSelection(${index})">
+                            <button type="button" onclick="downloadFileDirectly('${imgUrl}', '${filename}_foto_${index + 1}.jpg', 'photo', this)">Unduh #${index + 1}</button>
                          </div>`;
             });
-            html += `</div>`;
+            html += `</div></div>`;
 
-            if(info.title){ 
-                html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
+            let metaRows = "";
+            if (info.title) {
+                metaRows += `<div class="metaRow"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`;
+            }
+            if (info.author && info.author.nickname) {
+                metaRows += `<div class="metaRow"><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
+            }
+            if (metaRows) {
+                html += `<div class="metaCard">${metaRows}</div>`;
             }
 
-            actionButtons += `<button class="photo-btn" onclick="downloadAllPhotos(${JSON.stringify(info.images).replace(/"/g, '&quot;')}, '${filename}', this)">📸 Unduh Semua Foto</button>`;
+            actionButtons += `<button type="button" id="downloadSelectedPhotosBtn" class="primary" onclick="downloadSelectedPhotos(this)">✅ Unduh Terpilih (${info.images.length})</button>`;
+            actionButtons += `<button type="button" class="photo-btn" onclick="downloadAllPhotos(currentCarouselImages, currentCarouselFilename, this)">📸 Unduh Semua Foto</button>`;
             if (info.music) {
-                actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${info.music}', '${filename}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
+                actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${info.music}', '${filename}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
             }
-            actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
+            actionButtons += `<button type="button" class="secondary" onclick="copyURL()">Salin Link</button>`;
 
         } else {
             const normalUrl = info.play;
@@ -558,29 +674,40 @@ async function processURL(){
             const musicUrl = info.music || info.play;
 
             html += `
-                <div style="margin-bottom:15px; text-align:center; background:#000; border-radius:12px; overflow:hidden;">
-                    <video controls controlsList="nodownload" poster="${escapeAttribute(info.cover || '')}" style="max-width:100%; max-height:350px; display:block; margin:0 auto;">
-                        <source src="${escapeAttribute(normalUrl)}" type="video/mp4">
-                        Browser Anda tidak mendukung pemutar video.
-                    </video>
+                <div class="mediaStage">
+                    <div class="mediaStageHeader"><span>🎬 Pratinjau Video</span><span>${info.hdplay ? "HD Tersedia" : "Standar"}</span></div>
+                    <div class="videoFrame">
+                        <video controls controlsList="nodownload" poster="${escapeAttribute(info.cover || '')}">
+                            <source src="${escapeAttribute(normalUrl)}" type="video/mp4">
+                            Browser Anda tidak mendukung pemutar video.
+                        </video>
+                    </div>
                 </div>
             `;
-            if(info.title){ 
-                html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
+
+            let metaRows = "";
+            if (info.title) {
+                metaRows += `<div class="metaRow"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`;
             }
-            if(info.author && info.author.nickname){
-                html += `<div><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
+            if (info.author && info.author.nickname) {
+                metaRows += `<div class="metaRow"><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
+            }
+            if (metaRows) {
+                html += `<div class="metaCard">${metaRows}</div>`;
             }
 
-            actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video', this)">✨ Download HD</button>`;
-            actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
-            actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
-            actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
+            actionButtons += `<button type="button" class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video', this)">✨ Download HD</button>`;
+            actionButtons += `<button type="button" class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
+            actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
+            actionButtons += `<button type="button" class="secondary" onclick="copyURL()">Salin Link</button>`;
         }
 
         document.getElementById("resultInfo").innerHTML = html;
         document.getElementById("actionRowContainer").innerHTML = actionButtons;
         result.classList.add("show");
+        if (info.images && info.images.length > 0) {
+            syncPhotoSelectionUI();
+        }
 
     } catch(error) {
         loading.style.display = "none";
@@ -638,7 +765,47 @@ async function downloadFileDirectly(fileUrl, filename, fileType, btnElement = nu
     }
 }
 
+async function downloadSelectedPhotos(btnElement = null) {
+    clearError();
+    const checkboxes = document.querySelectorAll(".photo-select-cb");
+    const chosen = [];
+
+    checkboxes.forEach((cb, idx) => {
+        if (cb.checked && currentCarouselImages[idx]) {
+            chosen.push({ url: currentCarouselImages[idx], index: idx });
+        }
+    });
+
+    if (chosen.length === 0) {
+        showError("Pilih minimal satu foto terlebih dahulu sebelum mengunduh.");
+        showToast("Belum ada foto yang dipilih", "progress");
+        return;
+    }
+
+    const originalText = btnElement ? btnElement.textContent : "";
+    if (btnElement) {
+        btnElement.disabled = true;
+        btnElement.textContent = `⏳ Mengunduh (${chosen.length})...`;
+    }
+    showToast(`Menyiapkan ${chosen.length} foto terpilih...`, "progress");
+
+    for (let i = 0; i < chosen.length; i++) {
+        const item = chosen[i];
+        await downloadFileDirectly(item.url, `${currentCarouselFilename}_foto_${item.index + 1}.jpg`, 'photo');
+        if (i < chosen.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 450));
+        }
+    }
+
+    if (btnElement) {
+        btnElement.disabled = false;
+        btnElement.textContent = originalText;
+    }
+    syncPhotoSelectionUI();
+}
+
 async function downloadAllPhotos(imagesArray, baseFilename, btnElement = null) {
+    if (!imagesArray || imagesArray.length === 0) return;
     const originalText = btnElement ? btnElement.textContent : "";
     if (btnElement) {
         btnElement.disabled = true;

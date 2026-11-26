@@ -39,8 +39,12 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .inputBox{padding:8px;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color 0.25s ease,box-shadow 0.25s ease,background-color 0.25s ease;}
 .inputBox:hover{border-color:rgba(255,255,255,.2);background:rgba(15,23,42,.74);}
 .inputBox:focus-within{border-color:rgba(56,189,248,.55);background:rgba(15,23,42,.82);box-shadow:0 20px 60px rgba(0,0,0,.42),0 0 0 3px rgba(56,189,248,.15);}
-.inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:#fff;padding:14px 16px;font-size:15px;}
+.inputFieldWrap{flex:1;min-width:0;display:flex;align-items:center;gap:6px;}
+.inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:#fff;padding:14px 4px 14px 14px;font-size:15px;}
 .inputBox input::placeholder{color:#687386;}
+.clearBtn{display:none;align-items:center;justify-content:center;width:28px;height:28px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#94a3b8;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s ease;flex-shrink:0;}
+.clearBtn.visible{display:inline-flex;}
+.clearBtn:hover{background:rgba(248,113,113,.16);border-color:rgba(248,113,113,.4);color:#fecaca;}
 .pasteBtn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#e2e8f0;padding:12px 14px;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
 .pasteBtn:hover{background:rgba(255,255,255,.12);border-color:rgba(56,189,248,.38);color:#7dd3fc;transform:translateY(-1px);}
 .pasteBtn:active{transform:translateY(0) scale(0.98);}
@@ -77,7 +81,10 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .photoTile img{width:100%;height:108px;object-fit:cover;display:block;cursor:pointer;}
 .photoTile button{width:100%;padding:7px 6px;background:#ec4899;color:#fff;border:0;font-size:11.5px;cursor:pointer;font-weight:700;transition:filter 0.2s ease;}
 .photoTile button:hover:not(:disabled){filter:brightness(1.12);}
-.metaCard{background:rgba(2,6,23,.45);border:1px solid rgba(255,255,255,.06);padding:14px 16px;border-radius:14px;display:flex;flex-direction:column;gap:8px;}
+.metaCard{background:rgba(2,6,23,.45);border:1px solid rgba(255,255,255,.06);padding:14px 16px;border-radius:14px;display:flex;flex-direction:column;gap:10px;}
+.bioHeader{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.copyBioBtn{background:rgba(56,189,248,.12);color:#7dd3fc;border:1px solid rgba(56,189,248,.28);padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all 0.2s ease;}
+.copyBioBtn:hover{background:rgba(56,189,248,.22);color:#fff;transform:translateY(-1px);}
 .metaRow{font-size:13.5px;color:#cbd5e1;}
 .metaRow b{color:#f8fafc;font-weight:700;}
 .actionRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
@@ -145,7 +152,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     .hero{margin-top:38px;padding:12px 16px;}
     .downloader,.update-section,.cards{margin:24px auto;padding:0 16px;}
     .inputBox{flex-direction:column;padding:10px;gap:10px;}
-    .inputBox input{padding:12px;}
+    .inputBox input{padding:12px 6px 12px 10px;}
     .pasteBtn,.downloadBtn{width:100%;padding:12px;}
     .update-box,.result,.card{padding:18px;}
     .photoGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;}
@@ -177,7 +184,10 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
 
 <section class="downloader">
     <div class="inputBox">
-        <input id="urlInput" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off">
+        <div class="inputFieldWrap">
+            <input id="urlInput" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off" oninput="syncClearButton()">
+            <button class="clearBtn" id="clearInputBtn" type="button" title="Hapus input" aria-label="Hapus input" onclick="clearURLInput()">✕</button>
+        </div>
         <button class="pasteBtn" type="button" onclick="pasteURL()">📋 Tempel</button>
         <button class="downloadBtn" id="checkBtn" type="button" onclick="processURL()">Cek Konten</button>
     </div>
@@ -209,13 +219,22 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     <div class="update-box">
         <div class="update-header">
             <h2>📜 Catatan Update</h2>
-            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (12)</button>
+            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (13)</button>
         </div>
         <div class="update-list" id="updateList">
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-meta">
                     <span class="update-date">Versi Aktif</span>
+                    <span class="update-pill">UI/UX</span>
+                </div>
+                <div class="update-title">Tombol Clear Input (✕) & Salin Bio</div>
+                <div class="update-desc">Menambahkan tombol hapus cepat (✕) di dalam kolom input serta tombol Salin Bio pada kartu informasi hasil preview.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
                     <span class="update-pill">Foto</span>
                 </div>
                 <div class="update-title">Fitur Pilih Foto Carousel yang Diunduh</div>
@@ -375,6 +394,7 @@ const TIKTOK_API_ENDPOINTS = [
 ];
 
 let currentURL = "";
+let currentBioText = "";
 let currentCarouselImages = [];
 let currentCarouselFilename = "tiktok_media";
 let toastTimer = null;
@@ -404,6 +424,47 @@ function clearError() {
     const errorBox = document.getElementById("errorBox");
     errorBox.textContent = "";
     errorBox.classList.remove("show");
+}
+
+function syncClearButton() {
+    const input = document.getElementById("urlInput");
+    const clearBtn = document.getElementById("clearInputBtn");
+    if (!input || !clearBtn) return;
+    if (input.value.length > 0) {
+        clearBtn.classList.add("visible");
+    } else {
+        clearBtn.classList.remove("visible");
+    }
+}
+
+function clearURLInput() {
+    const input = document.getElementById("urlInput");
+    clearError();
+    if (!input) return;
+    input.value = "";
+    syncClearButton();
+    input.focus();
+}
+
+function buildMetaCardHTML(info) {
+    const hasTitle = Boolean(info && info.title && String(info.title).trim());
+    const hasAuthor = Boolean(info && info.author && info.author.nickname);
+    if (!hasTitle && !hasAuthor) return "";
+
+    let metaRows = "";
+    if (hasTitle) {
+        metaRows += `<div class="metaRow">
+                        <div class="bioHeader">
+                            <b>Bio / Judul:</b>
+                            <button type="button" class="copyBioBtn" onclick="copyBio()">📝 Salin Bio</button>
+                        </div>
+                        <div style="margin-top:4px;">${escapeHTML(info.title)}</div>
+                     </div>`;
+    }
+    if (hasAuthor) {
+        metaRows += `<div class="metaRow"><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
+    }
+    return `<div class="metaCard">${metaRows}</div>`;
 }
 
 function normalizeTikTokPayload(payload) {
@@ -566,6 +627,7 @@ async function pasteURL() {
         const text = await navigator.clipboard.readText();
         if (text && text.trim()) {
             input.value = text.trim();
+            syncClearButton();
             input.focus();
             showToast("Link ditempel dari clipboard", "copy");
         } else {
@@ -588,6 +650,7 @@ async function processURL(){
 
     clearError();
     result.classList.remove("show");
+    currentBioText = "";
     currentCarouselImages = [];
 
     if(!url) {
@@ -619,6 +682,7 @@ async function processURL(){
         loading.style.display = "none";
         loadingStatus.textContent = "";
         document.getElementById("platformName").textContent = "TikTok";
+        currentBioText = info && info.title ? String(info.title).trim() : "";
         const filename = (info.title || "tiktok_media").replace(/[^a-zA-Z0-9]/g, "_").substring(0, 40);
         
         let html = "";
@@ -650,16 +714,7 @@ async function processURL(){
             });
             html += `</div></div>`;
 
-            let metaRows = "";
-            if (info.title) {
-                metaRows += `<div class="metaRow"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`;
-            }
-            if (info.author && info.author.nickname) {
-                metaRows += `<div class="metaRow"><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
-            }
-            if (metaRows) {
-                html += `<div class="metaCard">${metaRows}</div>`;
-            }
+            html += buildMetaCardHTML(info);
 
             actionButtons += `<button type="button" id="downloadSelectedPhotosBtn" class="primary" onclick="downloadSelectedPhotos(this)">✅ Unduh Terpilih (${info.images.length})</button>`;
             actionButtons += `<button type="button" class="photo-btn" onclick="downloadAllPhotos(currentCarouselImages, currentCarouselFilename, this)">📸 Unduh Semua Foto</button>`;
@@ -685,16 +740,7 @@ async function processURL(){
                 </div>
             `;
 
-            let metaRows = "";
-            if (info.title) {
-                metaRows += `<div class="metaRow"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`;
-            }
-            if (info.author && info.author.nickname) {
-                metaRows += `<div class="metaRow"><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
-            }
-            if (metaRows) {
-                html += `<div class="metaCard">${metaRows}</div>`;
-            }
+            html += buildMetaCardHTML(info);
 
             actionButtons += `<button type="button" class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video', this)">✨ Download HD</button>`;
             actionButtons += `<button type="button" class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
@@ -819,6 +865,17 @@ async function downloadAllPhotos(imagesArray, baseFilename, btnElement = null) {
     if (btnElement) {
         btnElement.disabled = false;
         btnElement.textContent = originalText;
+    }
+}
+
+async function copyBio(){
+    if(!currentBioText){ showError("Tidak ada teks bio untuk disalin."); return; }
+    try{
+        await navigator.clipboard.writeText(currentBioText);
+        showToast("Bio sudah di salin", "copy");
+    }
+    catch{
+        prompt("Salin bio berikut:", currentBioText);
     }
 }
 

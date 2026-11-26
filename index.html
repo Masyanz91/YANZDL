@@ -7,132 +7,113 @@
 <title>Yanz Downloader - TikTok Direct Downloader</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
-body{min-height:100vh;background:radial-gradient(circle at top,#172554 0,#0b0f19 40%,#05070c 100%);color:#fff;overflow-x:hidden;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+body{min-height:100vh;background:radial-gradient(circle at top,#1d4ed8 0,#0b0f19 38%,#05070c 100%);color:#f8fafc;overflow-x:hidden;}
 
 /* --- ANIMASI PEMBUKAAN WEB (SPLASH SCREEN) --- */
-#splash-screen {
-    position: fixed;
-    inset: 0;
-    background: #05070c;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-#splash-screen.fade-out {
-    opacity: 0;
-    visibility: hidden;
-}
-.splash-logo {
-    font-size: 32px;
-    font-weight: 800;
-    color: #fff;
-    animation: scaleIn 0.8s ease-in-out infinite alternate;
-}
-.splash-logo span { color: #38bdf8; }
-.splash-spinner {
-    width: 35px;
-    height: 35px;
-    border: 3px solid rgba(255,255,255,.1);
-    border-top-color: #38bdf8;
-    border-radius: 50%;
-    margin-top: 15px;
-    animation: spin 0.8s linear infinite;
-}
-@keyframes scaleIn {
-    0% { transform: scale(0.95); opacity: 0.7; }
-    100% { transform: scale(1.05); opacity: 1; }
-}
+#splash-screen{position:fixed;inset:0;background:#05070c;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.55s ease,visibility 0.55s ease;}
+#splash-screen.fade-out{opacity:0;visibility:hidden;}
+.splash-logo{font-size:34px;font-weight:800;letter-spacing:-0.8px;color:#fff;animation:scaleIn 0.85s ease-in-out infinite alternate;}
+.splash-logo span{color:#38bdf8;}
+.splash-spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.1);border-top-color:#38bdf8;border-radius:50%;margin-top:16px;animation:spin 0.8s linear infinite;}
+@keyframes scaleIn{0%{transform:scale(0.95);opacity:0.72;}100%{transform:scale(1.05);opacity:1;}}
 
-header{width:100%;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(15px);position:sticky;top:0;z-index:20;background:rgba(5,7,12,.75);}
-.logo{font-size:23px;font-weight:800;}
+/* --- HEADER --- */
+header{width:100%;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:sticky;top:0;z-index:20;background:rgba(5,7,12,.76);}
+.logo{font-size:23px;font-weight:800;letter-spacing:-0.5px;}
 .logo span{color:#38bdf8;}
 nav{display:flex;gap:10px;}
-nav button{background:rgba(255,255,255,.06);color:#ddd;border:1px solid rgba(255,255,255,.08);padding:9px 13px;border-radius:10px;cursor:pointer;}
-nav button:hover{background:rgba(56,189,248,.15);}
-.hero{max-width:1000px;margin:70px auto 0;padding:20px;text-align:center;}
-.badge{display:inline-block;padding:7px 13px;border-radius:30px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);color:#7dd3fc;font-size:13px;margin-bottom:20px;}
-h1{font-size:clamp(35px,7vw,68px);line-height:1.05;margin-bottom:20px;}
-h1 span{color:#38bdf8;}
-.hero p{color:#9ca3af;max-width:650px;margin:auto;line-height:1.7;}
-.downloader, .update-section{max-width:850px;margin:40px auto;padding:20px;}
-.inputBox{padding:8px;display:flex;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:17px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
-.inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:white;padding:15px;font-size:15px;}
+nav button{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.1);padding:9px 14px;border-radius:11px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s ease;}
+nav button:hover{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.35);color:#fff;}
+
+/* --- HERO --- */
+.hero{max-width:1000px;margin:64px auto 0;padding:16px 20px;text-align:center;}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:30px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.28);color:#7dd3fc;font-size:13px;font-weight:600;margin-bottom:20px;box-shadow:0 8px 24px rgba(56,189,248,.12);}
+h1{font-size:clamp(34px,7vw,66px);line-height:1.06;letter-spacing:-1.2px;margin-bottom:18px;font-weight:800;}
+h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:#9ca3af;max-width:640px;margin:auto;line-height:1.7;font-size:15px;}
+
+/* --- DOWNLOADER & UPDATE SECTION --- */
+.downloader,.update-section{max-width:850px;margin:34px auto;padding:0 20px;}
+.inputBox{padding:8px;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color 0.2s ease,box-shadow 0.2s ease;}
+.inputBox:focus-within{border-color:rgba(56,189,248,.5);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 3px rgba(56,189,248,.14);}
+.inputBox input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:#fff;padding:14px 16px;font-size:15px;}
 .inputBox input::placeholder{color:#687386;}
-.downloadBtn{border:0;background:#38bdf8;color:#02111c;padding:0 22px;border-radius:12px;font-weight:800;cursor:pointer;}
-.downloadBtn:hover{filter:brightness(1.1);}
-.result{display:none;margin-top:25px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:left;overflow:hidden;}
-.result.show{display:block;}
-.resultTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
-.platform{color:#38bdf8;font-weight:bold;}
-.info{background:rgba(0,0,0,.18);padding:14px;border-radius:12px;color:#aeb7c6;line-height:1.6;font-size:14px;word-break:break-word;overflow-wrap:break-word;}
-.actionRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;}
-.actionRow button{flex:1;min-width:130px;padding:12px;border:0;border-radius:10px;cursor:pointer;font-weight:bold;}
+.pasteBtn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#e2e8f0;padding:12px 14px;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.2s ease;white-space:nowrap;}
+.pasteBtn:hover{background:rgba(255,255,255,.12);border-color:rgba(56,189,248,.35);color:#7dd3fc;}
+.downloadBtn{border:0;background:linear-gradient(135deg,#38bdf8 0%,#0ea5e9 100%);color:#02111c;padding:14px 22px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;transition:all 0.2s ease;white-space:nowrap;box-shadow:0 6px 18px rgba(56,189,248,.25);}
+.downloadBtn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+
+.result{display:none;margin-top:22px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;text-align:left;overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);}
+.result.show{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.resultTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.platform{color:#38bdf8;font-weight:700;font-size:13px;padding:4px 10px;border-radius:8px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);}
+.info{background:rgba(2,6,23,.45);border:1px solid rgba(255,255,255,.06);padding:15px;border-radius:14px;color:#cbd5e1;line-height:1.65;font-size:14px;word-break:break-word;overflow-wrap:break-word;}
+.actionRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.actionRow button{flex:1;min-width:130px;padding:12px 14px;border:0;border-radius:11px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.2s ease;}
+.actionRow button:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);}
+.actionRow button:disabled{opacity:0.65;cursor:wait;}
 .primary{background:#38bdf8;color:#03131e;}
 .hd-btn{background:#10b981;color:#fff;}
 .mp3-btn{background:#8b5cf6;color:#fff;}
 .photo-btn{background:#ec4899;color:#fff;}
-.secondary{background:rgba(255,255,255,.08);color:#fff;}
+.secondary{background:rgba(255,255,255,.08);color:#f8fafc;border:1px solid rgba(255,255,255,.1)!important;}
 
-/* Styling Dropdown Pemilihan Resolusi 320p - 2K */
-.resolution-select-box {
-    margin-bottom: 12px;
-    background: rgba(0,0,0,0.25);
-    padding: 10px 14px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 13px;
-}
-.resolution-select-box select {
-    background: #101621;
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.15);
-    padding: 6px 10px;
-    border-radius: 8px;
-    outline: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.loading{display:none;text-align:center;padding:20px;color:#94a3b8;}
+.loading{display:none;text-align:center;padding:24px 16px;color:#94a3b8;}
 .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
+.skeleton-bar{height:12px;width:65%;margin:12px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.06) 25%,rgba(255,255,255,.16) 50%,rgba(255,255,255,.06) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+@keyframes spin{to{transform:rotate(360deg);}}
 
 /* Animasi Toast Notification */
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(15,23,42,.95);border:1px solid rgba(56,189,248,.3);color:#fff;padding:14px 24px;border-radius:30px;box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:14px;font-weight:bold;z-index:1000;opacity:0;transition:all 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);display:flex;align-items:center;gap:10px;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(15,23,42,.95);border:1px solid rgba(56,189,248,.35);color:#fff;padding:13px 22px;border-radius:30px;box-shadow:0 12px 32px rgba(0,0,0,.55);font-size:14px;font-weight:700;z-index:1000;opacity:0;transition:all 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);display:flex;align-items:center;gap:10px;backdrop-filter:blur(12px);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast-icon{color:#38bdf8;font-size:16px;}
 
 /* Catatan Update Section Style */
-.update-box{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:25px;}
-.update-box h2{margin-bottom:20px;color:#38bdf8;font-size:22px;}
-.update-list{position:relative;padding-left:25px;border-left:2px solid rgba(56,189,248,.3);}
-.update-item{position:relative;margin-bottom:25px;}
+.update-box{background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);}
+.update-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.update-box h2{color:#38bdf8;font-size:21px;font-weight:800;}
+.toggle-updates-btn{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.12);padding:7px 13px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s ease;}
+.toggle-updates-btn:hover{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.35);color:#7dd3fc;}
+.update-list{position:relative;padding-left:24px;border-left:2px solid rgba(56,189,248,.3);}
+.update-item{position:relative;margin-bottom:22px;}
 .update-item:last-child{margin-bottom:0;}
-.update-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
-.update-date{font-size:12px;color:#38bdf8;font-weight:bold;margin-bottom:4px;}
-.update-title{font-size:15px;font-weight:bold;margin-bottom:4px;color:#fff;}
-.update-desc{font-size:13px;color:#9ca3af;line-height:1.5;}
+.update-item.collapsed-item{display:none;}
+.update-dot{position:absolute;left:-31px;top:3px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
+.update-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+.update-date{font-size:12px;color:#38bdf8;font-weight:700;}
+.update-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(129,140,248,.16);border:1px solid rgba(129,140,248,.35);color:#c7d2fe;}
+.update-title{font-size:15px;font-weight:700;margin-bottom:4px;color:#fff;}
+.update-desc{font-size:13px;color:#9ca3af;line-height:1.55;}
 
-.cards{max-width:850px;margin:30px auto;padding:20px;display:grid;grid-template-columns:1fr;gap:15px;}
-.card{padding:22px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:17px;display:flex;align-items:center;gap:20px;}
-.icon{font-size:35px;}
-.card h3{margin-bottom:5px;}
-.card p{color:#8994a5;font-size:14px;line-height:1.6;}
+.cards{max-width:850px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:1fr;gap:15px;}
+.card{padding:22px;background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:18px;display:flex;align-items:center;gap:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);}
+.icon{font-size:34px;}
+.card h3{margin-bottom:5px;font-size:17px;}
+.card p{color:#94a3b8;font-size:14px;line-height:1.6;}
 
-footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px 20px;color:#687386;font-size:13px;}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;padding:20px;}
+footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px 20px;color:#64748b;font-size:13px;margin-top:20px;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:20px;}
 .modal.show{display:flex;}
-.modalBox{width:100%;max-width:450px;background:#101621;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:25px;}
-.modalBox h2{margin-bottom:15px;}
+.modalBox{width:100%;max-width:450px;background:#101621;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:25px;box-shadow:0 25px 50px rgba(0,0,0,.5);}
+.modalBox h2{margin-bottom:14px;}
 .modalBox p{color:#9ca3af;line-height:1.7;font-size:14px;}
-.close{width:100%;margin-top:20px;padding:12px;border:0;border-radius:10px;background:#38bdf8;cursor:pointer;font-weight:bold;}
-@media(max-width:600px){header{padding:15px;}nav button{font-size:12px;padding:8px;}.hero{margin-top:40px;}.downloader{margin-top:25px;}.inputBox{flex-direction:column;}.downloadBtn{padding:14px;}.actionRow{flex-direction:column;}.card{flex-direction:column;text-align:center;}}
+.close{width:100%;margin-top:20px;padding:12px;border:0;border-radius:11px;background:#38bdf8;color:#03131e;cursor:pointer;font-weight:800;}
+
+@media(max-width:600px){
+    header{padding:15px 5%;}
+    nav button{font-size:12px;padding:8px 11px;}
+    .hero{margin-top:38px;padding:12px 16px;}
+    .downloader,.update-section,.cards{margin:24px auto;padding:0 16px;}
+    .inputBox{flex-direction:column;padding:10px;gap:10px;}
+    .inputBox input{padding:12px;}
+    .pasteBtn,.downloadBtn{width:100%;padding:12px;}
+    .update-box,.result,.card{padding:18px;}
+    .actionRow{flex-direction:column;}
+    .card{flex-direction:column;text-align:center;gap:12px;}
+}
 </style>
 </head>
 <body>
@@ -152,19 +133,21 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 
 <section class="hero">
     <div class="badge">⚡ TikTok Video, Foto & MP3 Downloader</div>
-    <h1>Download TikTok<br><span>Video (320p - 2K) & Musik.</span></h1>
-    <p>Tempel link TikTok untuk melihat preview dan mengunduh video dengan pilihan resolusi dari 320p hingga 2K.</p>
+    <h1>Download TikTok<br><span>Video, Foto & Musik.</span></h1>
+    <p>Tempel link TikTok untuk melihat preview dan mengunduh video, foto carousel, atau audio MP3.</p>
 </section>
 
 <section class="downloader">
     <div class="inputBox">
         <input id="urlInput" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off">
-        <button class="downloadBtn" onclick="processURL()">Cek Konten</button>
+        <button class="pasteBtn" type="button" onclick="pasteURL()">📋 Tempel</button>
+        <button class="downloadBtn" type="button" onclick="processURL()">Cek Konten</button>
     </div>
 
     <div class="loading" id="loading">
         <div class="spinner"></div>
         <div>Memuat media dan preview...</div>
+        <div class="skeleton-bar"></div>
     </div>
 
     <div class="result" id="result">
@@ -183,25 +166,91 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 <!-- Catatan Update Section -->
 <section class="update-section">
     <div class="update-box">
-        <h2>📜 Catatan Update</h2>
-        <div class="update-list">
+        <div class="update-header">
+            <h2>📜 Catatan Update</h2>
+            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (9)</button>
+        </div>
+        <div class="update-list" id="updateList">
             <div class="update-item">
                 <div class="update-dot"></div>
-                <div class="update-date">Versi Terbaru</div>
-                <div class="update-title">Pilihan Resolusi Video Lengkap (320p - 2K)</div>
-                <div class="update-desc">Menambahkan opsi rentang resolusi video dari 320p, 480p, 720p, 1080p, hingga 2K secara fleksibel.</div>
+                <div class="update-meta">
+                    <span class="update-date">Versi Aktif</span>
+                    <span class="update-pill">UI/UX</span>
+                </div>
+                <div class="update-title">Penyempurnaan Tampilan Modern</div>
+                <div class="update-desc">Menambahkan efek glassmorphism, tombol Tempel cepat, indikator proses unduh, lencana kategori di Catatan Update, serta spasi dan tipografi yang lebih konsisten.</div>
             </div>
-            <div class="update-item">
+            <div class="update-item collapsed-item">
                 <div class="update-dot"></div>
-                <div class="update-date">Pembaruan Sebelumnya</div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Stabil</span>
+                </div>
+                <div class="update-title">Kembali ke Versi Sebelumnya</div>
+                <div class="update-desc">Mengembalikan aplikasi ke versi stabil sebelum penambahan pilihan resolusi 320p - 2K dan eksperimen YouTube, dengan mempertahankan Splash Screen, unduhan Video (HD & Normal), Audio MP3, Foto Carousel (satuan & semua), serta notifikasi Toast.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Animasi</span>
+                </div>
                 <div class="update-title">Animasi Pembukaan Web (Splash Screen)</div>
-                <div class="update-desc">Menambahkan transisi animasi pembuka yang mulus saat halaman web pertama kali dimuat.</div>
+                <div class="update-desc">Menambahkan layar pembuka dengan animasi logo dan spinner saat halaman pertama kali dimuat sebelum beralih mulus ke tampilan utama.</div>
             </div>
-            <div class="update-item">
+            <div class="update-item collapsed-item">
                 <div class="update-dot"></div>
-                <div class="update-date">Rilis Awal</div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Alur</span>
+                </div>
+                <div class="update-title">Tombol "Cek Konten"</div>
+                <div class="update-desc">Menggabungkan tombol aksi utama di area input dan mengganti labelnya menjadi Cek Konten untuk memproses tautan TikTok.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Fitur</span>
+                </div>
+                <div class="update-title">Fitur Download Foto TikTok</div>
+                <div class="update-desc">Mendeteksi postingan slide foto/carousel TikTok dan menyediakan tombol unduh untuk tiap foto maupun sekaligus (Unduh Semua Foto).</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Notifikasi</span>
+                </div>
+                <div class="update-title">Animasi Notifikasi Aksi (Toast)</div>
+                <div class="update-desc">Menampilkan pop-up notifikasi saat aksi berlangsung, termasuk pesan "Video telah di download", "Musik telah di download", "Foto telah di download", dan "Link sudah di salin".</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">Audio</span>
+                </div>
+                <div class="update-title">Fitur Download MP3</div>
+                <div class="update-desc">Menambahkan tombol unduh audio/musik dari konten TikTok secara langsung ke perangkat.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
+                    <span class="update-pill">UI/UX</span>
+                </div>
+                <div class="update-title">Catatan Update & Penghapusan Statistik</div>
+                <div class="update-desc">Menghapus tombol pintasan TikTok serta penghitung statistik berbasis client-side yang tidak sinkron antarperangkat di Vercel, lalu mengganti bagian timeline menjadi Catatan Update.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Rilis Awal</span>
+                    <span class="update-pill">Rilis</span>
+                </div>
                 <div class="update-title">Peluncuran YanzDL</div>
-                <div class="update-desc">Inisialisasi sistem downloader video TikTok dengan pemutar media interaktif dan opsi kualitas HD.</div>
+                <div class="update-desc">Inisialisasi YanzDL sebagai aplikasi web single-file berbasis HTML, CSS, dan JavaScript murni untuk mengunduh video TikTok dengan pratinjau media dan pilihan kualitas HD.</div>
             </div>
         </div>
     </div>
@@ -212,7 +261,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
         <div class="icon">🖼️</div>
         <div>
             <h3>TikTok Downloader Komplit</h3>
-            <p>Mendukung pengunduhan Video dengan pilihan resolusi 320p - 2K, Audio (MP3), serta Slide Foto TikTok dengan mudah.</p>
+            <p>Mendukung pengunduhan Video (HD/Normal), Audio (MP3), serta Slide Foto TikTok dengan mudah dan langsung tersimpan ke perangkat.</p>
         </div>
     </div>
 </section>
@@ -228,7 +277,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:30px
 <div class="modal" id="modal">
     <div class="modalBox">
         <h2>Tentang YanzDL</h2>
-        <p>YanzDL adalah aplikasi web personal untuk mengunduh video dari resolusi 320p hingga 2K, foto, dan musik MP3 TikTok secara mudah.</p>
+        <p>YanzDL adalah aplikasi web personal untuk mengunduh video, foto, dan musik MP3 TikTok secara mudah.</p>
         <button class="close" onclick="closeAbout()">Tutup</button>
     </div>
 </div>
@@ -243,6 +292,7 @@ window.addEventListener("load", () => {
 });
 
 let currentURL = "";
+let toastTimer = null;
 
 function showToast(message, type = "success") {
     const toast = document.getElementById("toastNotification");
@@ -250,12 +300,51 @@ function showToast(message, type = "success") {
     const toastIcon = document.getElementById("toastIcon");
 
     toastMsg.textContent = message;
-    toastIcon.textContent = type === "copy" ? "📋" : "✨";
+    toastIcon.textContent = type === "copy" ? "📋" : type === "progress" ? "⏳" : "✨";
     
     toast.classList.add("show");
-    setTimeout(() => {
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
         toast.classList.remove("show");
     }, 3000);
+}
+
+function toggleUpdatesList() {
+    const items = document.querySelectorAll("#updateList .update-item.collapsed-item, #updateList .update-item.expanded-item");
+    const btn = document.getElementById("toggleUpdatesBtn");
+    const isExpanded = btn.dataset.expanded === "true";
+
+    items.forEach(item => {
+        if (isExpanded) {
+            item.classList.remove("expanded-item");
+            item.classList.add("collapsed-item");
+        } else {
+            item.classList.remove("collapsed-item");
+            item.classList.add("expanded-item");
+        }
+    });
+
+    const totalItems = document.querySelectorAll("#updateList .update-item").length;
+    btn.dataset.expanded = String(!isExpanded);
+    btn.textContent = !isExpanded ? "Ringkas" : `Lihat Semua (${totalItems})`;
+}
+
+async function pasteURL() {
+    const input = document.getElementById("urlInput");
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+            input.value = text.trim();
+            input.focus();
+            showToast("Link ditempel dari clipboard", "copy");
+        } else {
+            input.focus();
+            showToast("Clipboard kosong", "progress");
+        }
+    } catch {
+        input.focus();
+        showToast("Tekan & tahan kolom input untuk menempel link", "progress");
+    }
 }
 
 async function processURL(){
@@ -300,9 +389,9 @@ async function processURL(){
             html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:10px; margin-bottom:15px; max-height:250px; overflow-y:auto;">`;
             
             info.images.forEach((imgUrl, index) => {
-                html += `<div style="background:#000; border-radius:8px; overflow:hidden; text-align:center;">
+                html += `<div style="background:#000; border-radius:10px; overflow:hidden; text-align:center; border:1px solid rgba(255,255,255,.08);">
                             <img src="${escapeAttribute(imgUrl)}" style="width:100%; height:100px; object-fit:cover; display:block;">
-                            <button onclick="downloadFileDirectly('${imgUrl}', '${filename}_foto_${index + 1}.jpg', 'photo')" style="width:100%; padding:5px; background:#ec4899; color:#fff; border:0; font-size:11px; cursor:pointer; font-weight:bold;">Unduh</button>
+                            <button onclick="downloadFileDirectly('${imgUrl}', '${filename}_foto_${index + 1}.jpg', 'photo', this)" style="width:100%; padding:6px; background:#ec4899; color:#fff; border:0; font-size:11px; cursor:pointer; font-weight:bold;">Unduh</button>
                          </div>`;
             });
             html += `</div>`;
@@ -311,9 +400,9 @@ async function processURL(){
                 html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
             }
 
-            actionButtons += `<button class="photo-btn" onclick="downloadAllPhotos(${JSON.stringify(info.images).replace(/"/g, '&quot;')}, '${filename}')">📸 Unduh Semua Foto</button>`;
+            actionButtons += `<button class="photo-btn" onclick="downloadAllPhotos(${JSON.stringify(info.images).replace(/"/g, '&quot;')}, '${filename}', this)">📸 Unduh Semua Foto</button>`;
             if (info.music) {
-                actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${info.music}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
+                actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${info.music}', '${filename}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
             }
             actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
 
@@ -330,21 +419,6 @@ async function processURL(){
                     </video>
                 </div>
             `;
-
-            // Kotak Pilihan Resolusi Lengkap 320p sampai 2K
-            html += `
-                <div class="resolution-select-box">
-                    <span>⚙️ Pilih Resolusi Video:</span>
-                    <select id="videoResolutionSelect">
-                        <option value="2k">2K Quad HD (Ultra Sharp)</option>
-                        <option value="1080p">1080p Full HD (High Quality)</option>
-                        <option value="720p">720p HD (Standard HD)</option>
-                        <option value="480p">480p SD (Medium Quality)</option>
-                        <option value="320p">320p Low (Data Saver)</option>
-                    </select>
-                </div>
-            `;
-
             if(info.title){ 
                 html += `<div style="margin-bottom:8px;"><b>Bio / Judul:</b><br>${escapeHTML(info.title)}</div>`; 
             }
@@ -352,9 +426,9 @@ async function processURL(){
                 html += `<div><b>Pembuat:</b> ${escapeHTML(info.author.nickname)}</div>`;
             }
 
-            // Tombol Utama Download Video dengan Resolusi Terpilih
-            actionButtons += `<button class="hd-btn" onclick="downloadVideoWithResolution('${hdUrl}', '${normalUrl}', '${filename}')">✨ Download Video</button>`;
-            actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music')">🎵 Download MP3</button>`;
+            actionButtons += `<button class="hd-btn" onclick="downloadFileDirectly('${hdUrl}', '${filename}_HD.mp4', 'video', this)">✨ Download HD</button>`;
+            actionButtons += `<button class="primary" onclick="downloadFileDirectly('${normalUrl}', '${filename}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
+            actionButtons += `<button class="mp3-btn" onclick="downloadFileDirectly('${musicUrl}', '${filename}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
             actionButtons += `<button class="secondary" onclick="copyURL()">Salin Link</button>`;
         }
 
@@ -368,34 +442,19 @@ async function processURL(){
     }
 }
 
-// Fungsi untuk menangani unduhan video berdasarkan pilihan resolusi 320p - 2K
-function downloadVideoWithResolution(hdUrl, normalUrl, filename) {
-    const select = document.getElementById("videoResolutionSelect");
-    const resValue = select ? select.value : "720p";
+async function downloadFileDirectly(fileUrl, filename, fileType, btnElement = null) {
+    const doneMessage = fileType === 'music'
+        ? "Musik telah di download"
+        : fileType === 'photo'
+            ? "Foto telah di download"
+            : "Video telah di download";
 
-    // Pemetaan target file berdasarkan resolusi yang dipilih user
-    let targetUrl = hdUrl;
-    let label = "HD";
-
-    if (resValue === "2k" || resValue === "1080p" || resValue === "720p") {
-        targetUrl = hdUrl;
-        label = resValue.toUpperCase();
-    } else {
-        targetUrl = normalUrl;
-        label = resValue.toUpperCase();
+    const originalText = btnElement ? btnElement.textContent : "";
+    if (btnElement) {
+        btnElement.disabled = true;
+        btnElement.textContent = "⏳ Menyiapkan...";
     }
-
-    downloadFileDirectly(targetUrl, `${filename}_${label}.mp4`, 'video');
-}
-
-async function downloadFileDirectly(fileUrl, filename, fileType) {
-    if(fileType === 'music') {
-        showToast("Musik telah di download");
-    } else if(fileType === 'photo') {
-        showToast("Foto telah di download");
-    } else {
-        showToast("Video telah di download");
-    }
+    showToast("Menyiapkan file...", "progress");
 
     try {
         const response = await fetch(fileUrl);
@@ -420,14 +479,29 @@ async function downloadFileDirectly(fileUrl, filename, fileType) {
         document.body.appendChild(a);
         a.click();
         a.remove();
+    } finally {
+        if (btnElement) {
+            btnElement.disabled = false;
+            btnElement.textContent = originalText;
+        }
+        showToast(doneMessage, "success");
     }
 }
 
-async function downloadAllPhotos(imagesArray, baseFilename) {
-    showToast("Semua foto sedang di download");
+async function downloadAllPhotos(imagesArray, baseFilename, btnElement = null) {
+    const originalText = btnElement ? btnElement.textContent : "";
+    if (btnElement) {
+        btnElement.disabled = true;
+        btnElement.textContent = "⏳ Mengunduh...";
+    }
+    showToast("Menyiapkan semua foto...", "progress");
     for (let i = 0; i < imagesArray.length; i++) {
         await downloadFileDirectly(imagesArray[i], `${baseFilename}_foto_${i + 1}.jpg`, 'photo');
         await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    if (btnElement) {
+        btnElement.disabled = false;
+        btnElement.textContent = originalText;
     }
 }
 

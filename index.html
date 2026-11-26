@@ -42,7 +42,11 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .pasteBtn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#e2e8f0;padding:12px 14px;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.2s ease;white-space:nowrap;}
 .pasteBtn:hover{background:rgba(255,255,255,.12);border-color:rgba(56,189,248,.35);color:#7dd3fc;}
 .downloadBtn{border:0;background:linear-gradient(135deg,#38bdf8 0%,#0ea5e9 100%);color:#02111c;padding:14px 22px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;transition:all 0.2s ease;white-space:nowrap;box-shadow:0 6px 18px rgba(56,189,248,.25);}
-.downloadBtn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.downloadBtn:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);}
+.downloadBtn:disabled{opacity:0.65;cursor:wait;}
+
+.errorBox{display:none;margin-top:16px;background:rgba(127,29,29,.35);border:1px solid rgba(248,113,113,.35);color:#fecaca;padding:14px 16px;border-radius:14px;font-size:13.5px;line-height:1.55;backdrop-filter:blur(12px);}
+.errorBox.show{display:block;animation:fadeUp 0.25s ease;}
 
 .result{display:none;margin-top:22px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;text-align:left;overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);}
 .result.show{display:block;animation:fadeUp 0.35s ease;}
@@ -62,6 +66,7 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 
 .loading{display:none;text-align:center;padding:24px 16px;color:#94a3b8;}
 .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite;}
+.loadingStatus{font-size:12.5px;color:#7dd3fc;margin-top:6px;min-height:18px;}
 .skeleton-bar{height:12px;width:65%;margin:12px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.06) 25%,rgba(255,255,255,.16) 50%,rgba(255,255,255,.06) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -141,12 +146,15 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     <div class="inputBox">
         <input id="urlInput" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off">
         <button class="pasteBtn" type="button" onclick="pasteURL()">📋 Tempel</button>
-        <button class="downloadBtn" type="button" onclick="processURL()">Cek Konten</button>
+        <button class="downloadBtn" id="checkBtn" type="button" onclick="processURL()">Cek Konten</button>
     </div>
+
+    <div class="errorBox" id="errorBox" role="alert"></div>
 
     <div class="loading" id="loading">
         <div class="spinner"></div>
         <div>Memuat media dan preview...</div>
+        <div class="loadingStatus" id="loadingStatus"></div>
         <div class="skeleton-bar"></div>
     </div>
 
@@ -168,13 +176,22 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     <div class="update-box">
         <div class="update-header">
             <h2>📜 Catatan Update</h2>
-            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (9)</button>
+            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (10)</button>
         </div>
         <div class="update-list" id="updateList">
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-meta">
                     <span class="update-date">Versi Aktif</span>
+                    <span class="update-pill">Stabilitas</span>
+                </div>
+                <div class="update-title">Penanganan Error & Fallback API Cadangan</div>
+                <div class="update-desc">Menambahkan rantai endpoint API cadangan otomatis saat endpoint utama gagal atau timeout, serta pesan error yang lebih informatif pada area input.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
                     <span class="update-pill">UI/UX</span>
                 </div>
                 <div class="update-title">Penyempurnaan Tampilan Modern</div>
@@ -291,6 +308,21 @@ window.addEventListener("load", () => {
     }, 700);
 });
 
+const TIKTOK_API_ENDPOINTS = [
+    {
+        name: "Server Utama (tikwm)",
+        buildUrl: (targetUrl) => "https://www.tikwm.com/api/?url=" + encodeURIComponent(targetUrl) + "&hd=1"
+    },
+    {
+        name: "Server Cadangan 1 (tikwm mirror)",
+        buildUrl: (targetUrl) => "https://tikwm.com/api/?url=" + encodeURIComponent(targetUrl) + "&hd=1"
+    },
+    {
+        name: "Server Cadangan 2 (tikwm v1)",
+        buildUrl: (targetUrl) => "https://www.tikwm.com/api/feed/search?keywords=" + encodeURIComponent(targetUrl) + "&count=1&cursor=0&hd=1"
+    }
+];
+
 let currentURL = "";
 let toastTimer = null;
 
@@ -307,6 +339,111 @@ function showToast(message, type = "success") {
     toastTimer = setTimeout(() => {
         toast.classList.remove("show");
     }, 3000);
+}
+
+function showError(message) {
+    const errorBox = document.getElementById("errorBox");
+    errorBox.textContent = message;
+    errorBox.classList.add("show");
+}
+
+function clearError() {
+    const errorBox = document.getElementById("errorBox");
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+}
+
+function normalizeTikTokPayload(payload) {
+    if (!payload || typeof payload !== "object") return null;
+
+    if (payload.code === 0 && payload.data) {
+        if (Array.isArray(payload.data.videos) && payload.data.videos.length > 0) {
+            return payload.data.videos[0];
+        }
+        if (payload.data.play || (Array.isArray(payload.data.images) && payload.data.images.length > 0)) {
+            return payload.data;
+        }
+    }
+
+    return null;
+}
+
+async function fetchJsonWithTimeout(endpointUrl, timeoutMs = 9000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const res = await fetch(endpointUrl, {
+            signal: controller.signal,
+            headers: { "Accept": "application/json" }
+        });
+        if (!res.ok) {
+            const err = new Error(`HTTP_${res.status}`);
+            err.statusCode = res.status;
+            throw err;
+        }
+        return await res.json();
+    } catch (err) {
+        if (err && err.name === "AbortError") {
+            const timeoutErr = new Error("TIMEOUT");
+            timeoutErr.isTimeout = true;
+            throw timeoutErr;
+        }
+        throw err;
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+async function fetchTikTokMediaWithFallback(url, statusEl) {
+    let lastError = null;
+    let sawUnavailableMedia = false;
+
+    for (let i = 0; i < TIKTOK_API_ENDPOINTS.length; i++) {
+        const endpoint = TIKTOK_API_ENDPOINTS[i];
+        if (statusEl) {
+            statusEl.textContent = i === 0
+                ? `Menghubungi ${endpoint.name}...`
+                : `Mencoba ${endpoint.name} (${i + 1}/${TIKTOK_API_ENDPOINTS.length})...`;
+        }
+
+        try {
+            const rawData = await fetchJsonWithTimeout(endpoint.buildUrl(url), 9000);
+            const normalized = normalizeTikTokPayload(rawData);
+
+            if (normalized) {
+                return { info: normalized, sourceName: endpoint.name };
+            }
+
+            if (rawData && rawData.code !== 0 && rawData.msg) {
+                const msgLower = String(rawData.msg).toLowerCase();
+                if (msgLower.includes("private") || msgLower.includes("not found") || msgLower.includes("deleted") || msgLower.includes("url")) {
+                    sawUnavailableMedia = true;
+                }
+                lastError = new Error(rawData.msg);
+            } else {
+                lastError = new Error("EMPTY_MEDIA_DATA");
+            }
+        } catch (err) {
+            lastError = err;
+        }
+    }
+
+    if (sawUnavailableMedia) {
+        throw new Error("Konten tidak ditemukan, bersifat privat, atau sudah dihapus oleh pembuatnya.");
+    }
+    if (lastError && lastError.isTimeout) {
+        throw new Error("Waktu permintaan habis (timeout). Semua server API sedang sibuk atau jaringan lambat.");
+    }
+    if (lastError && lastError.statusCode === 429) {
+        throw new Error("Batas permintaan sementara tercapai (rate limit). Coba lagi beberapa saat lagi.");
+    }
+    if (lastError && lastError.message && lastError.message.startsWith("HTTP_")) {
+        throw new Error(`Server media merespons dengan galat (${lastError.message.replace("HTTP_", "HTTP ")}).`);
+    }
+    if (lastError && lastError.message === "EMPTY_MEDIA_DATA") {
+        throw new Error("Data video atau foto kosong pada respons server.");
+    }
+    throw new Error("Gagal terhubung ke seluruh server API. Periksa koneksi internet Anda lalu coba lagi.");
 }
 
 function toggleUpdatesList() {
@@ -331,6 +468,7 @@ function toggleUpdatesList() {
 
 async function pasteURL() {
     const input = document.getElementById("urlInput");
+    clearError();
     try {
         const text = await navigator.clipboard.readText();
         if (text && text.trim()) {
@@ -349,35 +487,43 @@ async function pasteURL() {
 
 async function processURL(){
     const input = document.getElementById("urlInput");
+    const checkBtn = document.getElementById("checkBtn");
+    const loading = document.getElementById("loading");
+    const loadingStatus = document.getElementById("loadingStatus");
+    const result = document.getElementById("result");
     const url = input.value.trim();
 
-    if(!url) { alert("Masukkan link terlebih dahulu."); input.focus(); return; }
-    if(!url.startsWith("http://") && !url.startsWith("https://")){ alert("Link harus diawali http:// atau https://"); return; }
+    clearError();
+    result.classList.remove("show");
+
+    if(!url) {
+        showError("Silakan tempel atau masukkan link TikTok terlebih dahulu.");
+        input.focus();
+        return;
+    }
+    if(!url.startsWith("http://") && !url.startsWith("https://")){
+        showError("Format link tidak valid. Link harus diawali http:// atau https://.");
+        input.focus();
+        return;
+    }
     
     currentURL = url;
     
     if(!url.toLowerCase().includes("tiktok.com") && !url.toLowerCase().includes("vm.tiktok.com")){
-        alert("Masukkan link TikTok yang valid.");
+        showError("Link bukan dari TikTok. Masukkan link video atau foto TikTok yang valid.");
+        input.focus();
         return;
     }
 
-    const loading = document.getElementById("loading");
-    const result = document.getElementById("result");
-
-    result.classList.remove("show");
+    checkBtn.disabled = true;
+    loadingStatus.textContent = "";
     loading.style.display = "block";
 
     try {
-        const res = await fetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(url));
-        const data = await res.json();
+        const { info } = await fetchTikTokMediaWithFallback(url, loadingStatus);
         
         loading.style.display = "none";
-        
-        if(data.code !== 0){
-            throw new Error(data.msg || "Gagal mengambil informasi media");
-        }
-
-        const info = data.data;
+        loadingStatus.textContent = "";
         document.getElementById("platformName").textContent = "TikTok";
         const filename = (info.title || "tiktok_media").replace(/[^a-zA-Z0-9]/g, "_").substring(0, 40);
         
@@ -438,7 +584,10 @@ async function processURL(){
 
     } catch(error) {
         loading.style.display = "none";
-        alert("Gagal memuat preview media:\n" + error.message);
+        loadingStatus.textContent = "";
+        showError(error && error.message ? error.message : "Gagal memuat preview media. Silakan coba lagi.");
+    } finally {
+        checkBtn.disabled = false;
     }
 }
 
@@ -458,6 +607,7 @@ async function downloadFileDirectly(fileUrl, filename, fileType, btnElement = nu
 
     try {
         const response = await fetch(fileUrl);
+        if (!response.ok) throw new Error("Blob fetch gagal");
         const blob = await response.blob();
         const blobUrl = window.URL.createObjectURL(blob);
         
@@ -506,7 +656,7 @@ async function downloadAllPhotos(imagesArray, baseFilename, btnElement = null) {
 }
 
 async function copyURL(){
-    if(!currentURL){ alert("Tidak ada link."); return; }
+    if(!currentURL){ showError("Tidak ada link untuk disalin."); return; }
     try{ 
         await navigator.clipboard.writeText(currentURL); 
         showToast("Link sudah di salin", "copy");

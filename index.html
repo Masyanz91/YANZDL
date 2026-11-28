@@ -9,10 +9,17 @@
 </head>
 <body>
 
-<!-- Splash Screen / Animasi Masuk Web -->
-<div id="splash-screen">
-    <div class="splash-logo">Yanz<span>DL</span></div>
-    <div class="splash-spinner"></div>
+<!-- Splash Screen / Animasi Masuk Markas Rahasia -->
+<div id="splash-screen" aria-hidden="true">
+    <div class="vault-door vault-door-top"></div>
+    <div class="vault-door vault-door-bottom"></div>
+    <div class="vault-scanline"></div>
+    <div class="vault-core" id="vaultCore">
+        <div class="vault-tag">SECURE VAULT // YANZDL</div>
+        <div class="splash-logo">Yanz<span>DL</span></div>
+        <div class="vault-status" id="vaultStatus">MEMINDAI AKSES MARKAS...</div>
+        <div class="splash-spinner"></div>
+    </div>
 </div>
 
 <header>
@@ -40,11 +47,25 @@
 
     <div class="errorBox" id="errorBox" role="alert"></div>
 
+    <!-- Animasi Mengecek Video & Loading -->
     <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div>Memuat media dan preview...</div>
-        <div class="loadingStatus" id="loadingStatus"></div>
-        <div class="skeleton-bar"></div>
+        <div class="scannerStage">
+            <div class="scannerBeam"></div>
+            <div class="scannerHud">
+                <span class="scannerPulse"></span>
+                <span>VIDEO SCANNER ACTIVE</span>
+            </div>
+            <div class="spinner"></div>
+            <div class="loadingTitle">Mengecek video & menyiapkan preview...</div>
+            <div class="loadingStatus" id="loadingStatus">Menghubungkan ke server media...</div>
+            <div class="skeleton-grid">
+                <div class="skeleton-thumb"></div>
+                <div class="skeleton-lines">
+                    <div class="skeleton-bar"></div>
+                    <div class="skeleton-bar short"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="result" id="result">
@@ -65,13 +86,22 @@
     <div class="update-box">
         <div class="update-header">
             <h2>📜 Catatan Update</h2>
-            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (16)</button>
+            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (17)</button>
         </div>
         <div class="update-list" id="updateList">
             <div class="update-item">
                 <div class="update-dot"></div>
                 <div class="update-meta">
                     <span class="update-date">Versi Aktif</span>
+                    <span class="update-pill">Animasi</span>
+                </div>
+                <div class="update-title">Animasi Markas Rahasia & Video Scanner Loading</div>
+                <div class="update-desc">Menambahkan transisi pembukaan gerbang markas rahasia saat masuk web serta animasi pemindai video dan skeleton preview saat mengecek tautan.</div>
+            </div>
+            <div class="update-item collapsed-item">
+                <div class="update-dot"></div>
+                <div class="update-meta">
+                    <span class="update-date">Pembaruan</span>
                     <span class="update-pill">Video HD</span>
                 </div>
                 <div class="update-title">Perbaikan Deteksi & Unduhan Video HD</div>

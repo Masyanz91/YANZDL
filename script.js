@@ -1,17 +1,50 @@
-// Animasi Masuk Seperti Membuka Markas Rahasia
-window.addEventListener("load", () => {
+// Anti-Stuck Vault Splash Controller
+let vaultGrantTimer = null;
+let vaultOpenTimer = null;
+let vaultCleanupTimer = null;
+let vaultHasOpened = false;
+
+function openVaultSplash(delayMs = 280) {
+    if (vaultHasOpened) return;
     const splash = document.getElementById("splash-screen");
     const vaultCore = document.getElementById("vaultCore");
     const vaultStatus = document.getElementById("vaultStatus");
 
-    setTimeout(() => {
+    if (!splash) return;
+
+    if (vaultGrantTimer) clearTimeout(vaultGrantTimer);
+    if (vaultOpenTimer) clearTimeout(vaultOpenTimer);
+    if (vaultCleanupTimer) clearTimeout(vaultCleanupTimer);
+
+    vaultGrantTimer = setTimeout(() => {
         if (vaultStatus) vaultStatus.textContent = "ACCESS GRANTED // MEMBUKA PINTU...";
         if (vaultCore) vaultCore.classList.add("granted");
-    }, 360);
+    }, Math.max(80, Math.floor(delayMs * 0.45)));
 
-    setTimeout(() => {
-        if (splash) splash.classList.add("vault-open");
-    }, 640);
+    vaultOpenTimer = setTimeout(() => {
+        if (vaultHasOpened) return;
+        vaultHasOpened = true;
+        splash.classList.add("vault-open");
+
+        const finishHide = () => {
+            splash.classList.add("vault-done");
+            splash.removeEventListener("transitionend", finishHide);
+            if (vaultCleanupTimer) clearTimeout(vaultCleanupTimer);
+        };
+
+        splash.addEventListener("transitionend", finishHide, { once: true });
+        vaultCleanupTimer = setTimeout(finishHide, 750);
+    }, delayMs);
+}
+
+// Jalankan secepatnya saat DOM siap, dipercepat saat load, dan punya batas aman maksimal 1.4 detik
+document.addEventListener("DOMContentLoaded", () => {
+    openVaultSplash(450);
+    setTimeout(() => openVaultSplash(0), 1400);
+});
+
+window.addEventListener("load", () => {
+    openVaultSplash(180);
 });
 
 const TIKTOK_API_ENDPOINTS = [

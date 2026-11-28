@@ -1,9 +1,17 @@
-// Hilangkan Animasi Splash Screen saat halaman selesai dimuat
+// Animasi Masuk Seperti Membuka Markas Rahasia
 window.addEventListener("load", () => {
+    const splash = document.getElementById("splash-screen");
+    const vaultCore = document.getElementById("vaultCore");
+    const vaultStatus = document.getElementById("vaultStatus");
+
     setTimeout(() => {
-        const splash = document.getElementById("splash-screen");
-        if (splash) splash.classList.add("fade-out");
-    }, 550);
+        if (vaultStatus) vaultStatus.textContent = "ACCESS GRANTED // MEMBUKA PINTU...";
+        if (vaultCore) vaultCore.classList.add("granted");
+    }, 360);
+
+    setTimeout(() => {
+        if (splash) splash.classList.add("vault-open");
+    }, 640);
 });
 
 const TIKTOK_API_ENDPOINTS = [
@@ -179,8 +187,8 @@ async function fetchTikTokMediaWithFallback(url, statusEl) {
         const endpoint = TIKTOK_API_ENDPOINTS[i];
         if (statusEl) {
             statusEl.textContent = i === 0
-                ? `Menghubungi ${endpoint.name}...`
-                : `Mencoba ${endpoint.name} (${i + 1}/${TIKTOK_API_ENDPOINTS.length})...`;
+                ? `Memindai stream di ${endpoint.name}...`
+                : `Beralih ke ${endpoint.name} (${i + 1}/${TIKTOK_API_ENDPOINTS.length})...`;
         }
 
         try {
@@ -340,7 +348,7 @@ async function processURL() {
     }
 
     checkBtn.disabled = true;
-    if (loadingStatus) loadingStatus.textContent = "";
+    if (loadingStatus) loadingStatus.textContent = "Menganalisis tautan & memindai video...";
     loading.style.display = "block";
 
     try {

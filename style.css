@@ -43,8 +43,8 @@ h1{font-size:clamp(34px,7vw,66px);line-height:1.06;letter-spacing:-1.2px;margin-
 h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .hero p{color:#9ca3af;max-width:640px;margin:auto;line-height:1.7;font-size:15px;}
 
-/* --- DOWNLOADER & UPDATE SECTION --- */
-.downloader,.update-section{max-width:850px;margin:34px auto;padding:0 20px;}
+/* --- DOWNLOADER SECTION --- */
+.downloader{max-width:850px;margin:34px auto;padding:0 20px;}
 .inputBox{padding:8px;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color 0.25s ease,box-shadow 0.25s ease,background-color 0.25s ease;}
 .inputBox:hover{border-color:rgba(255,255,255,.2);background:rgba(15,23,42,.74);}
 .inputBox:focus-within{border-color:rgba(56,189,248,.55);background:rgba(15,23,42,.82);box-shadow:0 20px 60px rgba(0,0,0,.42),0 0 0 3px rgba(56,189,248,.15);}
@@ -135,32 +135,21 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast-icon{color:#38bdf8;font-size:16px;}
 
-/* Catatan Update Section Style */
-.update-box{background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:border-color 0.25s ease;}
-.update-box:hover{border-color:rgba(255,255,255,.16);}
-.update-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
-.update-box h2{color:#38bdf8;font-size:21px;font-weight:800;}
-.toggle-updates-btn{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.12);padding:7px 13px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:transform 0.22s cubic-bezier(0.22,1,0.36,1),background-color 0.22s ease,border-color 0.22s ease,color 0.22s ease;}
-.toggle-updates-btn:hover{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.38);color:#7dd3fc;transform:translateY(-1px);}
-.toggle-updates-btn:active{transform:translateY(0) scale(0.98);}
-.update-list{position:relative;padding-left:24px;border-left:2px solid rgba(56,189,248,.3);}
-.update-item{position:relative;margin-bottom:22px;padding:10px 12px;margin-left:-12px;border-radius:12px;transition:background-color 0.2s ease;}
-.update-item:hover{background:rgba(255,255,255,.03);}
-.update-item:last-child{margin-bottom:0;}
-.update-item.collapsed-item{display:none;}
-.update-dot{position:absolute;left:-19px;top:14px;width:12px;height:12px;background:#38bdf8;border-radius:50%;border:2px solid #0b0f19;}
-.update-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
-.update-date{font-size:12px;color:#38bdf8;font-weight:700;}
-.update-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(129,140,248,.16);border:1px solid rgba(129,140,248,.35);color:#c7d2fe;}
-.update-title{font-size:15px;font-weight:700;margin-bottom:4px;color:#fff;}
-.update-desc{font-size:13px;color:#9ca3af;line-height:1.55;}
-
 .cards{max-width:850px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:1fr;gap:15px;}
 .card{padding:22px;background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:18px;display:flex;align-items:center;gap:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:transform 0.24s cubic-bezier(0.22,1,0.36,1),background-color 0.24s ease,border-color 0.24s ease,box-shadow 0.24s ease;}
 .card:hover{border-color:rgba(56,189,248,.3);background:rgba(15,23,42,.72);transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.1);}
 .icon{font-size:34px;}
 .card h3{margin-bottom:5px;font-size:17px;}
 .card p{color:#94a3b8;font-size:14px;line-height:1.6;}
+
+/* --- SOSIAL MEDIA SECTION --- */
+.social-section{max-width:850px;margin:28px auto 36px;padding:0 20px;}
+.social-box{background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);}
+.social-box h2{color:#38bdf8;font-size:20px;font-weight:800;margin-bottom:6px;}
+.social-box p{color:#94a3b8;font-size:13.5px;margin-bottom:16px;}
+.social-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+.social-link{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:12px;text-decoration:none;color:#e2e8f0;font-size:13.5px;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);transition:transform 0.22s cubic-bezier(0.22,1,0.36,1),background-color 0.22s ease,border-color 0.22s ease,color 0.22s ease,box-shadow 0.22s ease;}
+.social-link:hover{background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.38);color:#fff;transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.25);}
 
 footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px 20px;color:#64748b;font-size:13px;margin-top:20px;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:20px;}
@@ -175,12 +164,12 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     header{padding:15px 5%;}
     nav button{font-size:12px;padding:8px 11px;}
     .hero{margin-top:38px;padding:12px 16px;}
-    .downloader,.update-section,.cards{margin:24px auto;padding:0 16px;}
+    .downloader,.cards,.social-section{margin:24px auto;padding:0 16px;}
     .inputBox{flex-direction:column;padding:10px;gap:10px;}
     .inputFieldWrap{width:100%;}
     .inputBox input{padding:12px 6px 12px 10px;}
     .pasteBtn,.downloadBtn{width:100%;padding:12px;}
-    .update-box,.result,.card{padding:18px;}
+    .social-box,.result,.card{padding:18px;}
     .photoGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;}
     .actionRow{flex-direction:column;}
     .card{flex-direction:column;text-align:center;gap:12px;}

@@ -1,50 +1,88 @@
-// Anti-Stuck Vault Splash Controller
+// Animasi Memasukkan Kode Markas (~5 Detik, Anti-Stuck)
+let vaultTypingTimer = null;
 let vaultGrantTimer = null;
 let vaultOpenTimer = null;
 let vaultCleanupTimer = null;
 let vaultHasOpened = false;
 
-function openVaultSplash(delayMs = 280) {
+function finishVaultSplashNow() {
+    if (vaultHasOpened) return;
+    vaultHasOpened = true;
+
+    if (vaultTypingTimer) clearInterval(vaultTypingTimer);
+    if (vaultGrantTimer) clearTimeout(vaultGrantTimer);
+    if (vaultOpenTimer) clearTimeout(vaultOpenTimer);
+
+    const splash = document.getElementById("splash-screen");
+    if (!splash) return;
+
+    splash.classList.add("vault-open");
+
+    const finalize = () => {
+        splash.classList.add("vault-done");
+        splash.removeEventListener("transitionend", finalize);
+        if (vaultCleanupTimer) clearTimeout(vaultCleanupTimer);
+    };
+
+    splash.addEventListener("transitionend", finalize, { once: true });
+    vaultCleanupTimer = setTimeout(finalize, 650);
+}
+
+function startCodeTypingSplash(totalDurationMs = 5000) {
     if (vaultHasOpened) return;
     const splash = document.getElementById("splash-screen");
     const vaultCore = document.getElementById("vaultCore");
     const vaultStatus = document.getElementById("vaultStatus");
+    const codeDisplay = document.getElementById("vaultCodeDisplay");
 
     if (!splash) return;
 
+    const targetCode = "YANZ-2026";
+    const maskTemplate = "••••-••••";
+    let stepIndex = 0;
+
+    if (vaultTypingTimer) clearInterval(vaultTypingTimer);
     if (vaultGrantTimer) clearTimeout(vaultGrantTimer);
     if (vaultOpenTimer) clearTimeout(vaultOpenTimer);
-    if (vaultCleanupTimer) clearTimeout(vaultCleanupTimer);
+
+    const typingWindowMs = Math.floor(totalDurationMs * 0.52);
+    const stepInterval = Math.max(120, Math.floor(typingWindowMs / targetCode.length));
+
+    vaultTypingTimer = setInterval(() => {
+        stepIndex++;
+        const typedPart = targetCode.slice(0, stepIndex);
+        const maskedPart = maskTemplate.slice(stepIndex);
+        if (codeDisplay) {
+            codeDisplay.textContent = typedPart + maskedPart;
+        }
+        if (vaultStatus && stepIndex < targetCode.length) {
+            vaultStatus.textContent = `MEMASUKKAN KODE AKSES (${stepIndex}/${targetCode.length})...`;
+        }
+        if (stepIndex >= targetCode.length) {
+            clearInterval(vaultTypingTimer);
+            vaultTypingTimer = null;
+            if (vaultStatus) vaultStatus.textContent = "MEMVERIFIKASI KODE MARKAS...";
+        }
+    }, stepInterval);
 
     vaultGrantTimer = setTimeout(() => {
-        if (vaultStatus) vaultStatus.textContent = "ACCESS GRANTED // MEMBUKA PINTU...";
+        if (codeDisplay) codeDisplay.textContent = targetCode;
+        if (vaultStatus) vaultStatus.textContent = "KODE DITERIMA // ACCESS GRANTED";
         if (vaultCore) vaultCore.classList.add("granted");
-    }, Math.max(80, Math.floor(delayMs * 0.45)));
+    }, Math.floor(totalDurationMs * 0.72));
 
     vaultOpenTimer = setTimeout(() => {
-        if (vaultHasOpened) return;
-        vaultHasOpened = true;
-        splash.classList.add("vault-open");
-
-        const finishHide = () => {
-            splash.classList.add("vault-done");
-            splash.removeEventListener("transitionend", finishHide);
-            if (vaultCleanupTimer) clearTimeout(vaultCleanupTimer);
-        };
-
-        splash.addEventListener("transitionend", finishHide, { once: true });
-        vaultCleanupTimer = setTimeout(finishHide, 750);
-    }, delayMs);
+        finishVaultSplashNow();
+    }, totalDurationMs);
 }
 
-// Jalankan secepatnya saat DOM siap, dipercepat saat load, dan punya batas aman maksimal 1.4 detik
 document.addEventListener("DOMContentLoaded", () => {
-    openVaultSplash(450);
-    setTimeout(() => openVaultSplash(0), 1400);
+    startCodeTypingSplash(5000);
+    setTimeout(finishVaultSplashNow, 6200);
 });
 
 window.addEventListener("load", () => {
-    openVaultSplash(180);
+    setTimeout(finishVaultSplashNow, 5200);
 });
 
 const TIKTOK_API_ENDPOINTS = [
@@ -67,6 +105,44 @@ let currentBioText = "";
 let currentCarouselImages = [];
 let currentDownloadPrefix = "yanzdl_media";
 let toastTimer = null;
+
+function getApkUrlValue() {
+    const apkInput = document.getElementById("apkDownloadUrl");
+    return apkInput ? apkInput.value.trim() : "";
+}
+
+async function copyApkLink() {
+    const apkUrl = getApkUrlValue();
+    if (!apkUrl || apkUrl.includes("example.com")) {
+        showError("Silakan ganti dulu tautan APK placeholder (example.com) dengan link APK YanzDL asli Anda.");
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(apkUrl);
+        showToast("Link APK YanzDL disalin", "copy");
+    } catch {
+        prompt("Salin link APK berikut:", apkUrl);
+    }
+}
+
+function triggerApkDownload() {
+    clearError();
+    const apkUrl = getApkUrlValue();
+    if (!apkUrl || apkUrl.includes("example.com")) {
+        showError("Link download APK belum diatur. Ganti URL pada #apkDownloadUrl di index.html dengan link file .apk Anda.");
+        return;
+    }
+
+    showToast("Memulai unduhan YanzDL.apk...", "progress");
+    const a = document.createElement("a");
+    a.href = apkUrl;
+    a.download = "YanzDL.apk";
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
 
 function resolveVideoCode(info, sourceUrl = "") {
     const rawId = info && (info.id || info.aweme_id || info.video_id);

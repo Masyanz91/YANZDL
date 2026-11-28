@@ -2,23 +2,24 @@
 body{min-height:100vh;background-color:#05070c;background-image:radial-gradient(ellipse 75% 50% at 15% 0%,rgba(56,189,248,.16),transparent 65%),radial-gradient(ellipse 65% 48% at 88% 12%,rgba(129,140,248,.14),transparent 65%),radial-gradient(ellipse 80% 55% at 50% 100%,rgba(14,165,233,.09),transparent 70%);color:#f8fafc;overflow-x:hidden;}
 
 /* --- ANIMASI PEMBUKAAN MARKAS RAHASIA (VAULT SPLASH SCREEN) --- */
-#splash-screen{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;pointer-events:all;transition:visibility 0.75s ease;}
-#splash-screen.vault-open{pointer-events:none;visibility:hidden;}
+#splash-screen{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;pointer-events:all;transition:opacity 0.35s ease,visibility 0.35s ease;}
+#splash-screen.vault-open{pointer-events:none;opacity:0;visibility:hidden;}
+#splash-screen.vault-done{display:none!important;pointer-events:none!important;}
 
-.vault-door{position:absolute;left:0;right:0;height:50%;background:linear-gradient(180deg,#080d18 0%,#050811 100%);border-color:rgba(56,189,248,.28);z-index:1;transition:transform 0.72s cubic-bezier(0.76,0,0.24,1);will-change:transform;}
+.vault-door{position:absolute;left:0;right:0;height:50%;background:linear-gradient(180deg,#080d18 0%,#050811 100%);border-color:rgba(56,189,248,.28);z-index:1;transition:transform 0.55s cubic-bezier(0.76,0,0.24,1);will-change:transform;}
 .vault-door-top{top:0;border-bottom:1px solid rgba(56,189,248,.34);box-shadow:0 8px 32px rgba(0,0,0,.65);}
 .vault-door-bottom{bottom:0;border-top:1px solid rgba(56,189,248,.34);box-shadow:0 -8px 32px rgba(0,0,0,.65);}
 
 #splash-screen.vault-open .vault-door-top{transform:translateY(-102%);}
 #splash-screen.vault-open .vault-door-bottom{transform:translateY(102%);}
 
-.vault-scanline{position:absolute;left:0;right:0;height:2px;top:50%;background:linear-gradient(90deg,transparent,rgba(56,189,248,.9),rgba(129,140,248,.85),transparent);box-shadow:0 0 18px rgba(56,189,248,.75);z-index:3;opacity:0.9;transform:translateY(-50%);transition:opacity 0.25s ease,transform 0.45s ease;}
+.vault-scanline{position:absolute;left:0;right:0;height:2px;top:50%;background:linear-gradient(90deg,transparent,rgba(56,189,248,.9),rgba(129,140,248,.85),transparent);box-shadow:0 0 18px rgba(56,189,248,.75);z-index:3;opacity:0.9;transform:translateY(-50%);transition:opacity 0.2s ease,transform 0.35s ease;}
 #splash-screen.vault-open .vault-scanline{opacity:0;transform:translateY(-50%) scaleX(1.3);}
 
-.vault-core{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;transition:opacity 0.35s ease,transform 0.45s cubic-bezier(0.22,1,0.36,1);will-change:opacity,transform;}
+.vault-core{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;transition:opacity 0.25s ease,transform 0.35s cubic-bezier(0.22,1,0.36,1);will-change:opacity,transform;}
 .vault-core.granted .vault-tag{color:#34d399;border-color:rgba(52,211,153,.45);background:rgba(16,185,129,.14);}
 .vault-core.granted .vault-status{color:#6ee7b7;}
-#splash-screen.vault-open .vault-core{opacity:0;transform:scale(1.08);}
+#splash-screen.vault-open .vault-core{opacity:0;transform:scale(1.06);}
 
 .vault-tag{font-size:11px;font-weight:800;letter-spacing:2px;color:#7dd3fc;padding:5px 12px;border-radius:999px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);margin-bottom:12px;transition:all 0.25s ease;}
 .splash-logo{font-size:36px;font-weight:800;letter-spacing:-0.8px;color:#fff;animation:scaleIn 0.85s ease-in-out infinite alternate;}
@@ -147,9 +148,9 @@ h1 span{background:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%);-webkit-backg
 .social-box{background:rgba(15,23,42,.58);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);}
 .social-box h2{color:#38bdf8;font-size:20px;font-weight:800;margin-bottom:6px;}
 .social-box p{color:#94a3b8;font-size:13.5px;margin-bottom:16px;}
-.social-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-.social-link{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:12px;text-decoration:none;color:#e2e8f0;font-size:13.5px;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);transition:transform 0.22s cubic-bezier(0.22,1,0.36,1),background-color 0.22s ease,border-color 0.22s ease,color 0.22s ease,box-shadow 0.22s ease;}
-.social-link:hover{background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.38);color:#fff;transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.25);}
+.social-links{display:flex;flex-wrap:wrap;gap:12px;}
+.social-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:12px;text-decoration:none;color:#e2e8f0;font-size:13.5px;font-weight:700;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);transition:transform 0.22s cubic-bezier(0.22,1,0.36,1),background-color 0.22s ease,border-color 0.22s ease,color 0.22s ease,box-shadow 0.22s ease;}
+.social-link:hover{background:rgba(56,189,248,.18);border-color:rgba(56,189,248,.45);color:#fff;transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.25);}
 
 footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px 20px;color:#64748b;font-size:13px;margin-top:20px;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:20px;}
@@ -170,6 +171,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:28px
     .inputBox input{padding:12px 6px 12px 10px;}
     .pasteBtn,.downloadBtn{width:100%;padding:12px;}
     .social-box,.result,.card{padding:18px;}
+    .social-link{width:100%;}
     .photoGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;}
     .actionRow{flex-direction:column;}
     .card{flex-direction:column;text-align:center;gap:12px;}

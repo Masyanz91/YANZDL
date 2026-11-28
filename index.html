@@ -81,177 +81,38 @@
     </div>
 </section>
 
-<!-- Catatan Update Section -->
-<section class="update-section">
-    <div class="update-box">
-        <div class="update-header">
-            <h2>📜 Catatan Update</h2>
-            <button class="toggle-updates-btn" id="toggleUpdatesBtn" type="button" onclick="toggleUpdatesList()">Lihat Semua (17)</button>
-        </div>
-        <div class="update-list" id="updateList">
-            <div class="update-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Versi Aktif</span>
-                    <span class="update-pill">Animasi</span>
-                </div>
-                <div class="update-title">Animasi Markas Rahasia & Video Scanner Loading</div>
-                <div class="update-desc">Menambahkan transisi pembukaan gerbang markas rahasia saat masuk web serta animasi pemindai video dan skeleton preview saat mengecek tautan.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Video HD</span>
-                </div>
-                <div class="update-title">Perbaikan Deteksi & Unduhan Video HD</div>
-                <div class="update-desc">Menambahkan validasi tautan HD (hdplay) dibanding versi standar, pengecekan ukuran file blob, serta informasi status kualitas HD secara akurat.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">File</span>
-                </div>
-                <div class="update-title">Penamaan File Unduhan yanzdl + Kode Video</div>
-                <div class="update-desc">Menstandarkan nama file hasil unduhan menjadi yanzdl_&lt;kode_video&gt;_... untuk video HD/Normal, audio MP3, dan foto carousel agar lebih rapi dan ringkas.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Arsitektur</span>
-                </div>
-                <div class="update-title">Pemisahan File HTML, CSS & JavaScript</div>
-                <div class="update-desc">Memisahkan struktur markup, gaya visual, dan logika aplikasi ke index.html, style.css, serta script.js agar kode lebih terstruktur dan caching browser berjalan optimal.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">UI/UX</span>
-                </div>
-                <div class="update-title">Tombol Clear Input (✕) & Salin Bio</div>
-                <div class="update-desc">Menambahkan tombol hapus cepat (✕) di dalam kolom input serta tombol Salin Bio pada kartu informasi hasil preview.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Foto</span>
-                </div>
-                <div class="update-title">Fitur Pilih Foto Carousel yang Diunduh</div>
-                <div class="update-desc">Menambahkan seleksi centang pada tiap foto slide, tombol Pilih Semua / Batal Pilih, serta tombol Unduh Terpilih untuk mengunduh foto pilihan saja.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Tampilan</span>
-                </div>
-                <div class="update-title">Mesh Glow, Pratinjau Terstruktur & Transisi Halus</div>
-                <div class="update-desc">Menerapkan mesh glow lembut pada latar belakang, memisahkan area media dan metadata pratinjau secara terstruktur, memperhalus efek hover/focus, serta mengaktifkan angka tabular.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Stabilitas</span>
-                </div>
-                <div class="update-title">Penanganan Error & Fallback API Cadangan</div>
-                <div class="update-desc">Menambahkan rantai endpoint API cadangan otomatis saat endpoint utama gagal atau timeout, serta pesan error yang lebih informatif pada area input.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">UI/UX</span>
-                </div>
-                <div class="update-title">Penyempurnaan Tampilan Modern</div>
-                <div class="update-desc">Menambahkan efek glassmorphism, tombol Tempel cepat, indikator proses unduh, lencana kategori di Catatan Update, serta spasi dan tipografi yang lebih konsisten.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Stabil</span>
-                </div>
-                <div class="update-title">Kembali ke Versi Sebelumnya</div>
-                <div class="update-desc">Mengembalikan aplikasi ke versi stabil sebelum penambahan pilihan resolusi 320p - 2K dan eksperimen YouTube, dengan mempertahankan Splash Screen, unduhan Video (HD & Normal), Audio MP3, Foto Carousel (satuan & semua), serta notifikasi Toast.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Animasi</span>
-                </div>
-                <div class="update-title">Animasi Pembukaan Web (Splash Screen)</div>
-                <div class="update-desc">Menambahkan layar pembuka dengan animasi logo dan spinner saat halaman pertama kali dimuat sebelum beralih mulus ke tampilan utama.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Alur</span>
-                </div>
-                <div class="update-title">Tombol "Cek Konten"</div>
-                <div class="update-desc">Menggabungkan tombol aksi utama di area input dan mengganti labelnya menjadi Cek Konten untuk memproses tautan TikTok.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Fitur</span>
-                </div>
-                <div class="update-title">Fitur Download Foto TikTok</div>
-                <div class="update-desc">Mendeteksi postingan slide foto/carousel TikTok dan menyediakan tombol unduh untuk tiap foto maupun sekaligus (Unduh Semua Foto).</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Notifikasi</span>
-                </div>
-                <div class="update-title">Animasi Notifikasi Aksi (Toast)</div>
-                <div class="update-desc">Menampilkan pop-up notifikasi saat aksi berlangsung, termasuk pesan "Video telah di download", "Musik telah di download", "Foto telah di download", dan "Link sudah di salin".</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">Audio</span>
-                </div>
-                <div class="update-title">Fitur Download MP3</div>
-                <div class="update-desc">Menambahkan tombol unduh audio/musik dari konten TikTok secara langsung ke perangkat.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Pembaruan</span>
-                    <span class="update-pill">UI/UX</span>
-                </div>
-                <div class="update-title">Catatan Update & Penghapusan Statistik</div>
-                <div class="update-desc">Menghapus tombol pintasan TikTok serta penghitung statistik berbasis client-side yang tidak sinkron antarperangkat di Vercel, lalu mengganti bagian timeline menjadi Catatan Update.</div>
-            </div>
-            <div class="update-item collapsed-item">
-                <div class="update-dot"></div>
-                <div class="update-meta">
-                    <span class="update-date">Rilis Awal</span>
-                    <span class="update-pill">Rilis</span>
-                </div>
-                <div class="update-title">Peluncuran YanzDL</div>
-                <div class="update-desc">Inisialisasi YanzDL sebagai aplikasi web berbasis HTML, CSS, dan JavaScript murni untuk mengunduh video TikTok dengan pratinjau media dan pilihan kualitas HD.</div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="cards">
     <div class="card">
         <div class="icon">🖼️</div>
         <div>
             <h3>TikTok Downloader Komplit</h3>
             <p>Mendukung pengunduhan Video (HD/Normal), Audio (MP3), serta Slide Foto TikTok (pilih satuan, pilihan tertentu, atau semua) dengan mudah.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Sosial Media Section -->
+<section class="social-section" aria-label="Sosial Media">
+    <div class="social-box">
+        <h2>🌐 Sosial Media</h2>
+        <p>Terhubung dengan kanal sosial media pembuat YanzDL:</p>
+        <div class="social-links">
+            <a class="social-link" href="https://www.tiktok.com/@username_anda" target="_blank" rel="noopener noreferrer">
+                <span>🎵</span>
+                <span>TikTok</span>
+            </a>
+            <a class="social-link" href="https://www.instagram.com/username_anda" target="_blank" rel="noopener noreferrer">
+                <span>📸</span>
+                <span>Instagram</span>
+            </a>
+            <a class="social-link" href="https://github.com/username_anda" target="_blank" rel="noopener noreferrer">
+                <span>💻</span>
+                <span>GitHub</span>
+            </a>
+            <a class="social-link" href="https://www.youtube.com/@username_anda" target="_blank" rel="noopener noreferrer">
+                <span>▶️</span>
+                <span>YouTube</span>
+            </a>
         </div>
     </div>
 </section>

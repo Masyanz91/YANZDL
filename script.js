@@ -24,8 +24,28 @@ const TIKTOK_API_ENDPOINTS = [
 let currentURL = "";
 let currentBioText = "";
 let currentCarouselImages = [];
-let currentCarouselFilename = "tiktok_media";
+let currentDownloadPrefix = "yanzdl_media";
 let toastTimer = null;
+
+function resolveVideoCode(info, sourceUrl = "") {
+    const rawId = info && (info.id || info.aweme_id || info.video_id);
+    if (rawId !== undefined && rawId !== null) {
+        const cleanedId = String(rawId).replace(/[^a-zA-Z0-9_-]/g, "").trim();
+        if (cleanedId) return cleanedId;
+    }
+
+    const matchFromUrl = String(sourceUrl || "").match(/(?:video|photo)\/(\d+)/i);
+    if (matchFromUrl && matchFromUrl[1]) {
+        return matchFromUrl[1];
+    }
+
+    return "media";
+}
+
+function buildYanzDownloadPrefix(info, sourceUrl = "") {
+    const code = resolveVideoCode(info, sourceUrl);
+    return `yanzdl_${code}`;
+}
 
 function showToast(message, type = "success") {
     const toast = document.getElementById("toastNotification");
@@ -316,14 +336,14 @@ async function processURL() {
         if (platformEl) platformEl.textContent = "TikTok";
 
         currentBioText = info && info.title ? String(info.title).trim() : "";
-        const filename = (info.title || "tiktok_media").replace(/[^a-zA-Z0-9]/g, "_").substring(0, 40);
+        const filePrefix = buildYanzDownloadPrefix(info, url);
 
         let html = "";
         let actionButtons = "";
 
         if (info.images && info.images.length > 0) {
             currentCarouselImages = info.images.slice();
-            currentCarouselFilename = filename;
+            currentDownloadPrefix = filePrefix;
 
             html += `<div class="mediaStage">`;
             html += `<div class="mediaStageHeader"><span>🖼️ Slide Foto Carousel</span><span>${info.images.length} Foto</span></div>`;
@@ -342,7 +362,7 @@ async function processURL() {
                                 <input type="checkbox" id="photoCb_${index}" class="photo-select-cb" checked onchange="syncPhotoSelectionUI()">
                             </label>
                             <img src="${escapeAttribute(imgUrl)}" alt="Foto ${index + 1}" loading="lazy" onclick="togglePhotoSelection(${index})">
-                            <button type="button" onclick="downloadFileDirectly('${escapeAttribute(imgUrl)}', '${escapeAttribute(filename)}_foto_${index + 1}.jpg', 'photo', this)">Unduh #${index + 1}</button>
+                            <button type="button" onclick="downloadFileDirectly('${escapeAttribute(imgUrl)}', '${escapeAttribute(filePrefix)}_foto_${index + 1}.jpg', 'photo', this)">Unduh #${index + 1}</button>
                          </div>`;
             });
             html += `</div></div>`;
@@ -350,9 +370,9 @@ async function processURL() {
             html += buildMetaCardHTML(info);
 
             actionButtons += `<button type="button" id="downloadSelectedPhotosBtn" class="primary" onclick="downloadSelectedPhotos(this)">✅ Unduh Terpilih (${info.images.length})</button>`;
-            actionButtons += `<button type="button" class="photo-btn" onclick="downloadAllPhotos(currentCarouselImages, currentCarouselFilename, this)">📸 Unduh Semua Foto</button>`;
+            actionButtons += `<button type="button" class="photo-btn" onclick="downloadAllPhotos(currentCarouselImages, currentDownloadPrefix, this)">📸 Unduh Semua Foto</button>`;
             if (info.music) {
-                actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${escapeAttribute(info.music)}', '${escapeAttribute(filename)}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
+                actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${escapeAttribute(info.music)}', '${escapeAttribute(filePrefix)}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
             }
             actionButtons += `<button type="button" class="secondary" onclick="copyURL()">Salin Link</button>`;
         } else {
@@ -374,9 +394,9 @@ async function processURL() {
 
             html += buildMetaCardHTML(info);
 
-            actionButtons += `<button type="button" class="hd-btn" onclick="downloadFileDirectly('${escapeAttribute(hdUrl)}', '${escapeAttribute(filename)}_HD.mp4', 'video', this)">✨ Download HD</button>`;
-            actionButtons += `<button type="button" class="primary" onclick="downloadFileDirectly('${escapeAttribute(normalUrl)}', '${escapeAttribute(filename)}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
-            actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${escapeAttribute(musicUrl)}', '${escapeAttribute(filename)}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
+            actionButtons += `<button type="button" class="hd-btn" onclick="downloadFileDirectly('${escapeAttribute(hdUrl)}', '${escapeAttribute(filePrefix)}_HD.mp4', 'video', this)">✨ Download HD</button>`;
+            actionButtons += `<button type="button" class="primary" onclick="downloadFileDirectly('${escapeAttribute(normalUrl)}', '${escapeAttribute(filePrefix)}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
+            actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${escapeAttribute(musicUrl)}', '${escapeAttribute(filePrefix)}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
             actionButtons += `<button type="button" class="secondary" onclick="copyURL()">Salin Link</button>`;
         }
 
@@ -474,7 +494,7 @@ async function downloadSelectedPhotos(btnElement = null) {
 
     for (let i = 0; i < chosen.length; i++) {
         const item = chosen[i];
-        await downloadFileDirectly(item.url, `${currentCarouselFilename}_foto_${item.index + 1}.jpg`, "photo");
+        await downloadFileDirectly(item.url, `${currentDownloadPrefix}_foto_${item.index + 1}.jpg`, "photo");
         if (i < chosen.length - 1) {
             await new Promise(resolve => setTimeout(resolve, 400));
         }
@@ -487,8 +507,9 @@ async function downloadSelectedPhotos(btnElement = null) {
     syncPhotoSelectionUI();
 }
 
-async function downloadAllPhotos(imagesArray, baseFilename, btnElement = null) {
+async function downloadAllPhotos(imagesArray, basePrefix, btnElement = null) {
     if (!imagesArray || imagesArray.length === 0) return;
+    const prefix = basePrefix || "yanzdl_media";
     const originalText = btnElement ? btnElement.textContent : "";
     if (btnElement) {
         btnElement.disabled = true;
@@ -496,7 +517,7 @@ async function downloadAllPhotos(imagesArray, baseFilename, btnElement = null) {
     }
     showToast("Menyiapkan semua foto...", "progress");
     for (let i = 0; i < imagesArray.length; i++) {
-        await downloadFileDirectly(imagesArray[i], `${baseFilename}_foto_${i + 1}.jpg`, "photo");
+        await downloadFileDirectly(imagesArray[i], `${prefix}_foto_${i + 1}.jpg`, "photo");
         if (i < imagesArray.length - 1) {
             await new Promise(resolve => setTimeout(resolve, 450));
         }

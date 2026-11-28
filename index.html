@@ -9,16 +9,20 @@
 </head>
 <body>
 
-<!-- Splash Screen / Animasi Masuk Markas Rahasia -->
+<!-- Splash Screen / Animasi Memasukkan Kode Markas -->
 <div id="splash-screen" aria-hidden="true">
     <div class="vault-door vault-door-top"></div>
     <div class="vault-door vault-door-bottom"></div>
     <div class="vault-scanline"></div>
     <div class="vault-core" id="vaultCore">
-        <div class="vault-tag">SECURE VAULT // YANZDL</div>
+        <div class="vault-tag">VAULT AUTHENTICATION // YANZDL</div>
         <div class="splash-logo">Yanz<span>DL</span></div>
-        <div class="vault-status" id="vaultStatus">MEMINDAI AKSES MARKAS...</div>
-        <div class="splash-spinner"></div>
+        <div class="code-keypad" aria-hidden="true">
+            <span class="code-label">PASSCODE</span>
+            <span class="code-display" id="vaultCodeDisplay">••••-••••</span>
+            <span class="code-cursor">_</span>
+        </div>
+        <div class="vault-status" id="vaultStatus">MEMASUKKAN KODE AKSES...</div>
     </div>
 </div>
 
@@ -91,15 +95,47 @@
     </div>
 </section>
 
-<!-- Sosial Media Section (Khusus TikTok) -->
+<!-- Kolom Promosi & Download APK YanzDL -->
+<section class="apk-promo-section" id="apkPromoSection" aria-label="Promosi dan Download APK YanzDL">
+    <div class="apk-promo-box">
+        <div class="apk-promo-top">
+            <span class="apk-pill">📱 VERSI APLIKASI ANDROID</span>
+            <span class="apk-meta">YanzDL APK • Ringan & Praktis</span>
+        </div>
+        <h2>Download Aplikasi YanzDL (APK)</h2>
+        <p class="apk-desc">
+            Lebih cepat diakses langsung dari layar beranda HP Anda tanpa buka *browser* berulang kali. Cocok untuk simpan video HD, foto *carousel*, dan audio MP3 TikTok kapan saja.
+        </p>
+
+        <ul class="apk-perks">
+            <li>⚡ Akses instan dari ikon aplikasi di HP</li>
+            <li>🖼️ Unduh video, slide foto & MP3 lebih nyaman</li>
+            <li>🔔 Info pembaruan fitur langsung dari kanal resmi</li>
+        </ul>
+
+        <div class="apk-download-bar">
+            <input
+                id="apkDownloadUrl"
+                type="url"
+                value="https://example.com/yanzdl-latest.apk"
+                aria-label="Tautan file APK YanzDL"
+                readonly
+            >
+            <button type="button" class="apk-copy-btn" onclick="copyApkLink()">📋 Salin Link</button>
+            <button type="button" class="apk-get-btn" onclick="triggerApkDownload()">⬇️ Download APK</button>
+        </div>
+    </div>
+</section>
+
+<!-- Sosial Media Section (@about.yanzy) -->
 <section class="social-section" aria-label="Sosial Media TikTok">
     <div class="social-box">
         <h2>🎵 Akun TikTok</h2>
         <p>Ikuti akun TikTok resmi pembuat YanzDL:</p>
         <div class="social-links">
-            <a class="social-link" href="https://www.tiktok.com/@username_anda" target="_blank" rel="noopener noreferrer">
+            <a class="social-link" href="https://www.tiktok.com/@about.yanzy" target="_blank" rel="noopener noreferrer">
                 <span>🎵</span>
-                <span>TikTok (@username_anda)</span>
+                <span>TikTok (@about.yanzy)</span>
             </a>
         </div>
     </div>
@@ -116,7 +152,7 @@
 <div class="modal" id="modal">
     <div class="modalBox">
         <h2>Tentang YanzDL</h2>
-        <p>YanzDL adalah aplikasi web personal untuk mengunduh video, foto, dan musik MP3 TikTok secara mudah.</p>
+        <p>YanzDL adalah aplikasi web personal dan APK untuk mengunduh video, foto, dan musik MP3 TikTok secara mudah.</p>
         <button class="close" type="button" onclick="closeAbout()">Tutup</button>
     </div>
 </div>

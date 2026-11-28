@@ -521,4 +521,96 @@ async function downloadSelectedPhotos(btnElement = null) {
     syncPhotoSelectionUI();
 }
 
-async function downloadAllPhotos(
+async function downloadAllPhotos(imagesArray, basePrefix, btnElement = null) {
+    if (!imagesArray || imagesArray.length === 0) return;
+    const prefix = basePrefix || "yanzdl_media";
+    const originalText = btnElement ? btnElement.textContent : "";
+    if (btnElement) {
+        btnElement.disabled = true;
+        btnElement.textContent = "⏳ Mengunduh...";
+    }
+    showToast("Menyiapkan semua foto...", "progress");
+    for (let i = 0; i < imagesArray.length; i++) {
+        await downloadFileDirectly(imagesArray[i], `${prefix}_foto_${i + 1}.jpg`, "photo");
+        if (i < imagesArray.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 450));
+        }
+    }
+    if (btnElement) {
+        btnElement.disabled = false;
+        btnElement.textContent = originalText;
+    }
+}
+
+async function copyBio() {
+    if (!currentBioText) {
+        showError("Tidak ada teks bio untuk disalin.");
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(currentBioText);
+        showToast("Bio sudah di salin", "copy");
+    } catch {
+        prompt("Salin bio berikut:", currentBioText);
+    }
+}
+
+async function copyURL() {
+    if (!currentURL) {
+        showError("Tidak ada link untuk disalin.");
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(currentURL);
+        showToast("Link sudah di salin", "copy");
+    } catch {
+        prompt("Salin link berikut:", currentURL);
+    }
+}
+
+function showAbout() {
+    const modal = document.getElementById("modal");
+    if (modal) modal.classList.add("show");
+}
+
+function closeAbout() {
+    const modal = document.getElementById("modal");
+    if (modal) modal.classList.remove("show");
+}
+
+function escapeHTML(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function escapeAttribute(value) {
+    return String(value)
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const urlInput = document.getElementById("urlInput");
+    const modal = document.getElementById("modal");
+
+    if (urlInput) {
+        urlInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                processURL();
+            }
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeAbout();
+            }
+        });
+    }
+});

@@ -47,6 +47,22 @@ function buildYanzDownloadPrefix(info, sourceUrl = "") {
     return `yanzdl_${code}`;
 }
 
+function resolveBestMediaSources(info) {
+    const normalUrl = String((info && (info.play || info.wmplay)) || "").trim();
+    const rawHdUrl = String((info && (info.hdplay || info.play)) || "").trim();
+    const musicUrl = String((info && (info.music || info.music_info?.play || info.play)) || "").trim();
+
+    const hasDistinctHd = Boolean(rawHdUrl && normalUrl && rawHdUrl !== normalUrl);
+    const hdUrl = rawHdUrl || normalUrl;
+
+    return {
+        normalUrl,
+        hdUrl,
+        musicUrl,
+        hasDistinctHd
+    };
+}
+
 function showToast(message, type = "success") {
     const toast = document.getElementById("toastNotification");
     const toastMsg = document.getElementById("toastMessage");
@@ -121,7 +137,7 @@ function normalizeTikTokPayload(payload) {
         if (Array.isArray(payload.data.videos) && payload.data.videos.length > 0) {
             return payload.data.videos[0];
         }
-        if (payload.data.play || (Array.isArray(payload.data.images) && payload.data.images.length > 0)) {
+        if (payload.data.play || payload.data.hdplay || (Array.isArray(payload.data.images) && payload.data.images.length > 0)) {
             return payload.data;
         }
     }
@@ -376,16 +392,16 @@ async function processURL() {
             }
             actionButtons += `<button type="button" class="secondary" onclick="copyURL()">Salin Link</button>`;
         } else {
-            const normalUrl = info.play;
-            const hdUrl = info.hdplay || info.play;
-            const musicUrl = info.music || info.play;
+            const { normalUrl, hdUrl, musicUrl, hasDistinctHd } = resolveBestMediaSources(info);
+            const previewUrl = hasDistinctHd ? hdUrl : normalUrl;
+            const qualityBadge = hasDistinctHd ? "HD Terpisah Tersedia" : "HD Mengikuti Sumber";
 
             html += `
                 <div class="mediaStage">
-                    <div class="mediaStageHeader"><span>🎬 Pratinjau Video</span><span>${info.hdplay ? "HD Tersedia" : "Standar"}</span></div>
+                    <div class="mediaStageHeader"><span>🎬 Pratinjau Video</span><span>${qualityBadge}</span></div>
                     <div class="videoFrame">
                         <video controls controlsList="nodownload" preload="metadata" poster="${escapeAttribute(info.cover || '')}">
-                            <source src="${escapeAttribute(normalUrl)}" type="video/mp4">
+                            <source src="${escapeAttribute(previewUrl)}" type="video/mp4">
                             Browser Anda tidak mendukung pemutar video.
                         </video>
                     </div>
@@ -394,7 +410,7 @@ async function processURL() {
 
             html += buildMetaCardHTML(info);
 
-            actionButtons += `<button type="button" class="hd-btn" onclick="downloadFileDirectly('${escapeAttribute(hdUrl)}', '${escapeAttribute(filePrefix)}_HD.mp4', 'video', this)">✨ Download HD</button>`;
+            actionButtons += `<button type="button" class="hd-btn" onclick="downloadFileDirectly('${escapeAttribute(hdUrl)}', '${escapeAttribute(filePrefix)}_HD.mp4', 'video_hd', this)">✨ Download HD</button>`;
             actionButtons += `<button type="button" class="primary" onclick="downloadFileDirectly('${escapeAttribute(normalUrl)}', '${escapeAttribute(filePrefix)}_Normal.mp4', 'video', this)">⬇️ Download Normal</button>`;
             actionButtons += `<button type="button" class="mp3-btn" onclick="downloadFileDirectly('${escapeAttribute(musicUrl)}', '${escapeAttribute(filePrefix)}_Audio.mp3', 'music', this)">🎵 Download MP3</button>`;
             actionButtons += `<button type="button" class="secondary" onclick="copyURL()">Salin Link</button>`;
@@ -419,25 +435,33 @@ async function processURL() {
 }
 
 async function downloadFileDirectly(fileUrl, filename, fileType, btnElement = null) {
+    if (!fileUrl) {
+        showError("Tautan file unduhan tidak tersedia.");
+        return;
+    }
+
     const doneMessage = fileType === "music"
         ? "Musik telah di download"
         : fileType === "photo"
             ? "Foto telah di download"
-            : "Video telah di download";
+            : fileType === "video_hd"
+                ? "Video HD telah di download"
+                : "Video telah di download";
 
     const originalText = btnElement ? btnElement.textContent : "";
     if (btnElement) {
         btnElement.disabled = true;
         btnElement.textContent = "⏳ Menyiapkan...";
     }
-    showToast("Menyiapkan file...", "progress");
+    showToast(fileType === "video_hd" ? "Menyiapkan video HD..." : "Menyiapkan file...", "progress");
 
     try {
-        const response = await fetch(fileUrl);
+        const response = await fetch(fileUrl, { mode: "cors" });
         if (!response.ok) throw new Error("Blob fetch gagal");
         const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
+        if (!blob || blob.size === 0) throw new Error("Blob kosong");
 
+        const blobUrl = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.style.display = "none";
         a.href = blobUrl;
@@ -449,7 +473,9 @@ async function downloadFileDirectly(fileUrl, filename, fileType, btnElement = nu
         setTimeout(() => {
             window.URL.revokeObjectURL(blobUrl);
             if (a.parentNode) a.parentNode.removeChild(a);
-        }, 250);
+        }, 300);
+
+        showToast(doneMessage, "success");
     } catch (e) {
         const a = document.createElement("a");
         a.href = fileUrl;
@@ -459,12 +485,13 @@ async function downloadFileDirectly(fileUrl, filename, fileType, btnElement = nu
         document.body.appendChild(a);
         a.click();
         a.remove();
+
+        showToast("Membuka tautan media langsung", "progress");
     } finally {
         if (btnElement) {
             btnElement.disabled = false;
             btnElement.textContent = originalText;
         }
-        showToast(doneMessage, "success");
     }
 }
 
